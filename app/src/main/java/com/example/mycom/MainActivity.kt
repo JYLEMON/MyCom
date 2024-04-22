@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyComTheme {
                 // A surface container using the 'background' color from the theme
-
+                EmployeeScreen()
             }
         }
     }

@@ -47,7 +47,7 @@ fun EmployeeListItem(employee: Employee) {
     Spacer(modifier = Modifier.padding(4.dp))
     Box(
         modifier = Modifier
-            .fillMaxWidth(0.8f)
+            .fillMaxWidth()
             .background(boxColor, shape = RoundedCornerShape(8.dp)) // Set background color
             .padding(8.dp)
     ) {
