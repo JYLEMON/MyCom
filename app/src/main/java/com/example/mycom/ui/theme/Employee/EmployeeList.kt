@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,7 +23,7 @@ import androidx.compose.ui.unit.dp
 
 data class Employee(val name: String, val id: String)
 
-val riceColor = Color(0xFFF5F5DC) // Define rice color here
+val boxColor = Color(0xFFF5F5DC) // Define rice color here
 
 @Composable
 fun EmployeeListScreen(
@@ -43,12 +44,12 @@ fun EmployeeListScreen(
 
 @Composable
 fun EmployeeListItem(employee: Employee) {
+    Spacer(modifier = Modifier.padding(4.dp))
     Box(
         modifier = Modifier
-            .fillMaxWidth(0.9f)
-            .background(riceColor, shape = RoundedCornerShape(8.dp))
+            .fillMaxWidth(0.8f)
+            .background(boxColor, shape = RoundedCornerShape(8.dp)) // Set background color
             .padding(8.dp)
-            , // Use background() to set background color
     ) {
         Column {
             Row {
@@ -59,7 +60,6 @@ fun EmployeeListItem(employee: Employee) {
             }
         }
     }
-    Spacer(modifier = Modifier.padding(4.dp))
 }
 
 @Preview(
