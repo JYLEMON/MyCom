@@ -30,6 +30,7 @@ val boxColor = Color(0xFFF5F5DC) // Define rice color here
 @Composable
 fun EmployeeListScreen(
     employees: List<Employee>,
+    onNextButtonPress: () -> Unit, // Added onNextButtonPress parameter
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -45,7 +46,7 @@ fun EmployeeListScreen(
             }
         }
         FloatingActionButton(
-            onClick = { /* Navigate to add employee screen */ },
+            onClick = onNextButtonPress, // Changed onClick parameter
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
@@ -87,18 +88,12 @@ fun EmployeeListItem(employee: Employee) {
 fun EmployeeListPreview() {
     val employees = listOf(
         Employee("John", "S001"),
-        Employee("Test", "S002"),
-        Employee("Test", "S002"),
-        Employee("Test", "S002"),
-        Employee("Test", "S002"),
-        Employee("Test", "S002"),
-        Employee("Test", "S002"),
-        Employee("Test", "S002"),
-        Employee("Test", "S002"),
-        Employee("Test", "S002"),
-        Employee("Test", "S002"),
-        Employee("Test", "S002"),
-        Employee("Test", "S002"),
+        Employee("Alice", "S002"),
+        // Add more employees as needed
     )
-    EmployeeListScreen(employees = employees)
+
+    EmployeeListScreen(
+        employees = employees,
+        onNextButtonPress = {}
+    )
 }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MyCom</string>
+    <string name="EmployeeList">Employee List</string>
+    <string name="EmployeeAdd">Add Employee</string>
 </resources>
