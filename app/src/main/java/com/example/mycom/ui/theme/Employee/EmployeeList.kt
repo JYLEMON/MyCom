@@ -1,5 +1,3 @@
-package com.example.mycom.ui
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,40 +16,37 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mycom.data.Employee
-import com.example.mycom.ui.theme.Employee.EmployeeViewModel
+
+data class Employee(val name: String, val id: String)
+
+val boxColor = Color(0xFFF5F5DC) // Define rice color here
 
 @Composable
 fun EmployeeListScreen(
-    employees: List<Employee> = emptyList(), // Use empty list as default
-    viewModel: EmployeeViewModel = viewModel(),
+    employees: List<Employee>,
+    onNextButtonPress: () -> Unit, // Added onNextButtonPress parameter
     modifier: Modifier = Modifier
 ) {
-    val employeesState by viewModel.employees.collectAsState()
-
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
     ) {
         LazyColumn(
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
         ) {
-            items(employeesState) { employee ->
+            items(employees) { employee ->
                 EmployeeListItem(employee = employee)
             }
         }
         FloatingActionButton(
-            onClick = {
-                viewModel.onAddEmployeeClick() // Use exposed function from ViewModel
-            },
+            onClick = onNextButtonPress, // Changed onClick parameter
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
@@ -71,15 +66,15 @@ fun EmployeeListItem(employee: Employee) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.LightGray, shape = RoundedCornerShape(8.dp)) // Set background color
+            .background(boxColor, shape = RoundedCornerShape(8.dp)) // Set background color
             .padding(8.dp)
     ) {
         Column {
             Row {
-                Text(text = "Name: ${employee.name}")
+                Text(text = employee.name)
             }
             Row {
-                Text(text = "ID: ${employee.id}")
+                Text(text = employee.id)
             }
         }
     }
@@ -91,10 +86,14 @@ fun EmployeeListItem(employee: Employee) {
 )
 @Composable
 fun EmployeeListPreview() {
+    val employees = listOf(
+        Employee("John", "S001"),
+        Employee("Alice", "S002"),
+        // Add more employees as needed
+    )
+
     EmployeeListScreen(
-        employees = listOf(
-            Employee("John", "S001", "john@example.com"),
-            Employee("Alice", "S002", "alice@example.com")
-        )
+        employees = employees,
+        onNextButtonPress = {}
     )
 }
