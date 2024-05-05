@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 
 data class Employee(val name: String, val id: String)
 
-val boxColor = Color(0xFFF5F5DC) // Define rice color here
+val boxColor = Color(0xFFF5F5DC)
 
 @Composable
 fun EmployeeListScreen(
