@@ -3,13 +3,10 @@ package com.example.mycom
 import Employee
 import EmployeeAddScreen
 import EmployeeListScreen
-import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,7 +18,7 @@ import com.example.mycom.EmployeeScreen.Add
 
 @Composable
 fun EmployeeScreen(
-    navController: NavHostController = rememberNavController()
+    navController: NavController = rememberNavController()
 ) {
     val employees = listOf(
         Employee("John", "S001"),
@@ -41,40 +38,18 @@ fun EmployeeScreen(
         ) {
             composable(route = List.name) {
                 EmployeeListScreen(
-                    employees = employees,
+                    employees = employees, // Pass the list of employees
                     onNextButtonPress = {
                         navController.navigate(Add.name)
                     }
                 )
             }
             composable(route = Add.name) {
-                val context = LocalContext.current
-                EmployeeAddScreen(
-                    onAddButtonClicked = { name: String, id: String, email: String ->
-                        addEmployee(context, name = name, id = id, email= email)
-                    },
-                )
+                EmployeeAddScreen()// Composable for adding an employee
             }
         }
     }
 }
-
-private fun addEmployee(context: Context, name: String, id: String, email: String) {
-    val intent = Intent(Intent.ACTION_SEND).apply {
-        type =  "text/plain"
-        putExtra(Intent.EXTRA_SUBJECT, "EMPLOYEE DETAIL")
-        val sharedText = "Name: $name\\nID: S001\\nEmail: john@example.com" // Using the passed name parameter
-        putExtra(Intent.EXTRA_TEXT, sharedText)
-    }
-
-    context.startActivity(
-        Intent.createChooser(
-            intent,
-            "Share via"
-        )
-    )
-}
-
 
 enum class EmployeeScreen(val titleResId: Int) {
     List(titleResId = R.string.EmployeeList),
