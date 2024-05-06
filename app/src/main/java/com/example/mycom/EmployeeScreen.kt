@@ -1,6 +1,5 @@
 package com.example.mycom
 
-import Employee
 import EmployeeAddScreen
 import EmployeeListScreen
 import androidx.compose.foundation.layout.padding
@@ -15,16 +14,14 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import com.example.mycom.EmployeeScreen.List
 import com.example.mycom.EmployeeScreen.Add
+import com.example.mycom.data.EmployeeData
 
 @Composable
 fun EmployeeScreen(
     navController: NavController = rememberNavController()
 ) {
-    val employees = listOf(
-        Employee("John", "S001"),
-        Employee("Alice", "S002"),
-        // Add more employees as needed
-    )
+
+    val employees = EmployeeData().allEmployees.toList()
 
     val backStackEntry = navController.currentBackStackEntryAsState().value
     val currentScreen = EmployeeScreen.valueOf(
@@ -45,7 +42,9 @@ fun EmployeeScreen(
                 )
             }
             composable(route = Add.name) {
-                EmployeeAddScreen()// Composable for adding an employee
+                EmployeeAddScreen(
+                    onAddButtonClicked = {name,id,email -> }
+                )// Composable for adding an employee
             }
         }
     }

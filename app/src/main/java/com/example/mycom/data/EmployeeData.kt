@@ -9,9 +9,17 @@ class EmployeeData {
 
     val allEmployees: Set<Employee> =
         setOf(
-            Employee("John", "JD001"),
-            Employee("Alice", "AS002"),
-            Employee("Bob", "BJ003"),
+            Employee("John", "E001"),
+            Employee("Alice", "E002"),
+            Employee("Bob", "E003"),
+            Employee("Ryan", "E004"),
+            Employee("Eason", "E005"),
+            Employee("Brandon", "E006"),
+            Employee("Jonathan", "E007"),
+            Employee("Elise", "E008"),
+            Employee("Alex", "E009"),
+            Employee("Brayan", "E010"),
+            Employee("Steven", "E011"),
             // Add more employees as needed
         )
 }
