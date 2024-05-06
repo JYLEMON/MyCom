@@ -1,4 +1,4 @@
-import android.content.Context
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -9,8 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.mycom.data.EmployeeData
 
 @Composable
 fun EmployeeAddScreen(
@@ -52,22 +52,13 @@ fun EmployeeAddScreen(
         }
         Button(
             onClick = {
-                onAddButtonClicked(name, id, email)
+                val newEmployee = EmployeeData.addEmployee(name, id, email) // Get the new employee
+                onAddButtonClicked(name, id, email) // Pass data to callback (optional)
+                // Potentially trigger UI update in EmployeeListScreen (explained later)
             },
             modifier = Modifier.padding(vertical = 16.dp)
         ) {
             Text("Add Employee")
         }
     }
-}
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
-@Composable
-fun EmployeeAddPreview() {
-    EmployeeAddScreen(
-        onAddButtonClicked = { name: String, id: String, email: String -> },
-    )
 }

@@ -16,11 +16,13 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.mycom.data.EmployeeData.Employee
@@ -28,7 +30,8 @@ import com.example.mycom.data.EmployeeData.Employee
 @Composable
 fun EmployeeListScreen(
     employees: List<Employee>,
-    onNextButtonPress: () -> Unit, // Added onNextButtonPress parameter
+    onNextButtonPress: () -> Unit,
+    onEmployeeSelected: (Employee) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -40,11 +43,11 @@ fun EmployeeListScreen(
                 .padding(horizontal = 16.dp)
         ) {
             items(employees) { employee ->
-                EmployeeListItem(employee = employee)
+                EmployeeListItem(employee = employee, onEmployeeSelected)
             }
         }
         FloatingActionButton(
-            onClick = onNextButtonPress, // Changed onClick parameter
+            onClick = onNextButtonPress,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
@@ -59,24 +62,31 @@ fun EmployeeListScreen(
 }
 
 @Composable
-fun EmployeeListItem(employee: Employee) {
+fun EmployeeListItem(employee: Employee, onEmployeeSelected: (Employee) -> Unit) {
     Spacer(modifier = Modifier.padding(4.dp))
-   Card(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .height(56.dp),
-       shape = RoundedCornerShape(8.dp),
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(8.dp)
+        shape = RoundedCornerShape(8.dp),
+
         ) {
-            Row {
-                Text(text = employee.name)
-            }
-            Row {
-                Text(text = employee.id)
+        Surface (
+            modifier = Modifier.fillMaxSize(),
+            color = Color.Transparent,
+            onClick = { onEmployeeSelected(employee) }
+            // Invoke the callback when card is clicked
+        ) {
+            Column(
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Row {
+                    Text(text = employee.name)
+                }
+                Row {
+                    Text(text = employee.id.toString()) // Convert id to string for display
+                }
             }
         }
     }
@@ -88,10 +98,11 @@ fun EmployeeListItem(employee: Employee) {
 )
 @Composable
 fun EmployeeListPreview() {
-    val employees = com.example.mycom.data.EmployeeData().allEmployees.toList()
+    val employees = com.example.mycom.data.EmployeeData.allEmployees.toList()
 
     EmployeeListScreen(
         employees = employees,
-        onNextButtonPress = {}
+        onNextButtonPress = {},
+        onEmployeeSelected = {}
     )
 }

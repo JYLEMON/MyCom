@@ -1,10 +1,16 @@
 package com.example.mycom
 
 import EmployeeAddScreen
+import EmployeeDetailScreen
+import EmployeeDetails
 import EmployeeListScreen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -21,12 +27,10 @@ fun EmployeeScreen(
     navController: NavController = rememberNavController()
 ) {
 
-    val employees = EmployeeData().allEmployees.toList()
+    val employees = EmployeeData.allEmployees.toList()
 
-    val backStackEntry = navController.currentBackStackEntryAsState().value
-    val currentScreen = EmployeeScreen.valueOf(
-        backStackEntry?.destination?.route ?: List.name
-    )
+    var selectedEmployee by remember { mutableStateOf<EmployeeData.Employee?>(null) }
+
     Scaffold { innerPadding ->
         NavHost(
             navController = navController as NavHostController,
@@ -35,22 +39,35 @@ fun EmployeeScreen(
         ) {
             composable(route = List.name) {
                 EmployeeListScreen(
-                    employees = employees, // Pass the list of employees
+                    employees = employees,
                     onNextButtonPress = {
                         navController.navigate(Add.name)
+                    },
+                    onEmployeeSelected = { employee ->
+                        selectedEmployee = employee // Set the selected employee
+                        navController.navigate(EmployeeScreen.Detail.name) // Navigate to details screen
                     }
                 )
             }
             composable(route = Add.name) {
-                EmployeeAddScreen(
-                    onAddButtonClicked = {name,id,email -> }
-                )// Composable for adding an employee
+                EmployeeAddScreen { name, id, email ->
+                    EmployeeData.addEmployee(name, id, email)
+                    navController.popBackStack() // Assuming you want to go back after adding an employee
+                }
+            }
+
+            composable(route = EmployeeScreen.Detail.name) { // Define the Detail route
+                selectedEmployee?.let { employee ->
+                    EmployeeDetailScreen(employeeDetails = EmployeeDetails(employee.name, employee.id))
+                }
             }
         }
     }
 }
 
+
 enum class EmployeeScreen(val titleResId: Int) {
     List(titleResId = R.string.EmployeeList),
-    Add(titleResId = R.string.EmployeeAdd)
+    Add(titleResId = R.string.EmployeeAdd),
+    Detail(titleResId = R.string.EmployeeDetail)
 }

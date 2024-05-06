@@ -2,4 +2,5 @@
     <string name="app_name">MyCom</string>
     <string name="EmployeeList">Employee List</string>
     <string name="EmployeeAdd">Add Employee</string>
+    <string name="EmployeeDetail">Employee Detail</string>
 </resources>
