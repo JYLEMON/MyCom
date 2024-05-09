@@ -116,6 +116,6 @@ fun EmployeeDetailScreen(
 )
 @Composable
 fun EmployeeDetailPreview() {
-    val employeeDetails = EmployeeDetails("John Doe", "001","john@gmail.com")
+    val employeeDetails = EmployeeDetails("John Doe", "E001","john@gmail.com")
     EmployeeDetailScreen(employeeDetails = employeeDetails, onEditClick = {})
 }

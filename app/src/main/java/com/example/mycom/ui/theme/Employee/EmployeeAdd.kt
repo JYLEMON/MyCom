@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.mycom.data.EmployeeData
 
 @Composable
@@ -28,6 +29,12 @@ fun EmployeeAddScreen(
         modifier = Modifier.padding(16.dp)
     ) {
         Row(modifier = Modifier.padding(vertical = 8.dp)) {
+            Text(text = "ID : E${nextId.value.toString().padStart(3, '0')}",
+                fontSize = 18.sp
+                ) // Display the next available ID
+        }
+
+        Row(modifier = Modifier.padding(vertical = 8.dp)) {
             Text(text = "Name:")
             Spacer(modifier = Modifier.width(16.dp))
             OutlinedTextField(
@@ -36,9 +43,7 @@ fun EmployeeAddScreen(
                 modifier = Modifier.weight(1f)
             )
         }
-        Row(modifier = Modifier.padding(vertical = 8.dp)) {
-            Text(text = "ID: E${nextId.value.toString().padStart(3, '0')}") // Display the next available ID
-        }
+
         Row(modifier = Modifier.padding(vertical = 8.dp)) {
             Text(text = "Email:")
             Spacer(modifier = Modifier.width(16.dp))

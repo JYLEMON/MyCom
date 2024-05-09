@@ -1,3 +1,4 @@
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,10 +19,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,7 +47,7 @@ fun EmployeeListScreen(
         LazyColumn(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .padding(bottom = 32.dp)
+                .padding(bottom = 48.dp)
         ) {
             items(employees) { employee ->
                 EmployeeListItem(
@@ -72,6 +75,7 @@ fun EmployeeListScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .blur(32.dp)
                     .background(Color.Black.copy(alpha = 0.5f)) // Semi-transparent black color
                     .clickable { employeeToDelete = null }, // Dismiss the dialog on background click
                 contentAlignment = Alignment.Center
@@ -92,7 +96,7 @@ fun EmployeeListScreen(
                         }
                     },
                     dismissButton = {
-                        Button(
+                        OutlinedButton(
                             onClick = { employeeToDelete = null }
                         ) {
                             Text(text = "Cancel")
@@ -128,7 +132,7 @@ fun EmployeeListItem(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(text = employee.name)
-                    Text(text = employee.id.toString()) // Convert id to string for display
+                    Text(text = employee.id) // Convert id to string for display
                 }
                 IconButton(
                     onClick = onDeleteEmployee,
@@ -142,7 +146,6 @@ fun EmployeeListItem(
             }
         }
     }
-
 }
 
 @Preview(

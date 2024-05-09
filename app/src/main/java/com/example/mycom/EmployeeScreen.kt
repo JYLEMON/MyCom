@@ -16,11 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
-import com.example.mycom.EmployeeScreen.List
-import com.example.mycom.EmployeeScreen.Add
 import com.example.mycom.data.EmployeeData
 
 @Composable
