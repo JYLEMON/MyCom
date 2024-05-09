@@ -42,7 +42,9 @@ fun EmployeeListScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         LazyColumn(
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 32.dp)
         ) {
             items(employees) { employee ->
                 EmployeeListItem(
