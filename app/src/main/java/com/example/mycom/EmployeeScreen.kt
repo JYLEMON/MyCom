@@ -1,10 +1,10 @@
 package com.example.mycom
 
-import EmployeeAddScreen
-import EmployeeDetailScreen
-import EmployeeDetails
-import EmployeeEditScreen
-import com.example.mycom.ui.theme.employee.EmployeeListScreen
+import com.example.mycom.ui.employee.EmployeeAddScreen
+import com.example.mycom.ui.employee.EmployeeDetailScreen
+import com.example.mycom.ui.employee.EmployeeDetails
+import com.example.mycom.ui.employee.EmployeeEditScreen
+import com.example.mycom.ui.employee.EmployeeListScreen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable

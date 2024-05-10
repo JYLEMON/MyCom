@@ -1,4 +1,4 @@
-package com.example.mycom.ui.theme.employee
+package com.example.mycom.ui.employee
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
