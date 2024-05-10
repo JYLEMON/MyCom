@@ -3,4 +3,5 @@
     <string name="EmployeeList">Employee List</string>
     <string name="EmployeeAdd">Add Employee</string>
     <string name="EmployeeDetail">Employee Detail</string>
+    <string name="EmployeeEdit">Employee Edit</string>
 </resources>

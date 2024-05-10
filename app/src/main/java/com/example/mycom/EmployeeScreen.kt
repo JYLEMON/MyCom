@@ -3,7 +3,8 @@ package com.example.mycom
 import EmployeeAddScreen
 import EmployeeDetailScreen
 import EmployeeDetails
-import EmployeeListScreen
+import EmployeeEditScreen
+import com.example.mycom.ui.theme.employee.EmployeeListScreen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -70,11 +71,39 @@ fun EmployeeScreen(
                             id = employee.id,
                             email = employee.email
                         ),
-                        onEditClick = {} // Provide a dummy implementation
+                        onEditClick = {
+                            // Navigate to edit screen
+                            navController.navigate(EmployeeScreen.Edit.name)
+                        },
+                        onEmployeeDetailsChange = { /* Do nothing for now */ }
                     )
                 }
             }
 
+            composable(route = EmployeeScreen.Edit.name) { // Define the Edit route
+                selectedEmployee?.let { employee ->
+                    // Pass initial employee details to the Edit screen
+                    EmployeeEditScreen(
+                        initialName = employee.name,
+                        initialEmail = employee.email
+                    ) { updatedName, updatedEmail ->
+                        // Update the employee details
+                        val updatedEmployee = EmployeeData.Employee(
+                            name = updatedName,
+                            id = employee.id,
+                            email = updatedEmail
+                        )
+                        // Find the index of the selected employee in the list
+                        val index = employees.indexOfFirst { it.id == employee.id }
+                        if (index != -1) {
+                            // Update the employee in the list
+                            employees[index] = updatedEmployee
+                        }
+                        // Navigate back to the detail screen
+                        navController.popBackStack()
+                    }
+                }
+            }
         }
     }
 }
@@ -83,5 +112,6 @@ fun EmployeeScreen(
 enum class EmployeeScreen(val titleResId: Int) {
     List(titleResId = R.string.EmployeeList),
     Add(titleResId = R.string.EmployeeAdd),
-    Detail(titleResId = R.string.EmployeeDetail)
+    Detail(titleResId = R.string.EmployeeDetail),
+    Edit(titleResId = R.string.EmployeeEdit)
 }
