@@ -41,6 +41,13 @@ class EmployeeViewModel(
                 _state.update {it.copy(
                     isAddingEmployee = false
                 ) }
+
+            }
+
+            EmployeeEvent.HideDeleteDialog -> {
+                _state.update { it.copy(
+                    isDeletingEmployee = false
+                ) }
             }
 
             EmployeeEvent.SaveEmployee -> {
@@ -78,9 +85,17 @@ class EmployeeViewModel(
                     isAddingEmployee = true
                 ) }
             }
+
+            EmployeeEvent.ShowDeleteDialog -> {
+                _state.update { it.copy(
+                    isDeletingEmployee = true
+                ) }
+            }
+
             is EmployeeEvent.SortEmployee ->{
                 _sortType.value = event.sortType
             }
+
             is EmployeeEvent.ShowDetail -> {
                 // Set the selected employee in the state
                 _state.update { it.copy(isShowingDetail = true, selectedEmployee = event.employee) }

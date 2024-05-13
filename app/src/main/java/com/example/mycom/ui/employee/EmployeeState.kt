@@ -9,5 +9,6 @@ data class EmployeeState (
     val isAddingEmployee: Boolean = false,
     val isShowingDetail: Boolean = false,
     val selectedEmployee: Employee? = null,
+    val isDeletingEmployee: Boolean = false,
     val sortType: SortType = SortType.EMP_NAME
 )

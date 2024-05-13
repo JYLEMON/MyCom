@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -21,6 +22,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -75,7 +77,9 @@ fun EmployeeScreenTest(
                         // Invoke the callback when card is clicked
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(16.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column(
@@ -95,7 +99,7 @@ fun EmployeeScreenTest(
                                 )
                             }
                             IconButton(onClick = {
-                                onEvent(EmployeeEvent.DeleteEmployee(employee))
+                                onEvent(EmployeeEvent.ShowDeleteDialog)
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Delete,
@@ -107,9 +111,12 @@ fun EmployeeScreenTest(
                 }
             }
         }
+
+        if (state.isDeletingEmployee) {
+            DeleteEmployeeDialog(state = state, onEvent = onEvent)
+        }
     }
 }
-
 @Preview(
     showSystemUi = true,
     showBackground = true
