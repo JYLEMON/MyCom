@@ -16,63 +16,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.mycom.data.Employee
 
 @Composable
-fun AddEmployeeDialog (
-    state: EmployeeState,
-    onEvent: (EmployeeEvent) -> Unit,
-    modifier: Modifier = Modifier
+fun ShowDetail(
+    employee: Employee,
+    onClose: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black.copy(alpha = 0.5f)) // Semi-transparent black color
-            .clickable {  onEvent(EmployeeEvent.HideDialog) }, // Dismiss the dialog on background click
+            .clickable(onClick = onClose), // Close the dialog on background click
         contentAlignment = Alignment.Center
     ) {
         AlertDialog(
             modifier = Modifier,
-            onDismissRequest = {
-                onEvent(EmployeeEvent.HideDialog)
-            },
-            title = { Text(text = "Add Employee") },
+            onDismissRequest = onClose,
+            title = { Text(text = "Employee Details") },
             text = {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    TextField(
-                        value = state.empName,
-                        onValueChange = {
-                            onEvent(EmployeeEvent.SetName(it))
-                        },
-                        placeholder = {
-                            Text(text = "Name")
-                        }
-                    )
+                    Text(text = "Name: ${employee.empName}")
+                    Text(text = "Email: ${employee.email}")
 
-                    TextField(
-                        value = state.email,
-                        onValueChange = {
-                            onEvent(EmployeeEvent.SetEmail(it))
-                        },
-                        placeholder = {
-                            Text(text = "Email")
-                        }
-                    )
-
-
+                    // Add more details as needed
                 }
             },
             confirmButton = {
+                // Add a button to close the dialog
                 Button(
-                    onClick = {
-                        onEvent(EmployeeEvent.SaveEmployee)
-                    }
+                    onClick = onClose
                 ) {
-                    Text(text = "Save")
+                    Text(text = "Close")
                 }
             }
         )
     }
-
 }

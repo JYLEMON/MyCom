@@ -7,5 +7,7 @@ data class EmployeeState (
     val empName: String = "",
     val email: String = "",
     val isAddingEmployee: Boolean = false,
+    val isShowingDetail: Boolean = false,
+    val selectedEmployee: Employee? = null,
     val sortType: SortType = SortType.EMP_NAME
 )

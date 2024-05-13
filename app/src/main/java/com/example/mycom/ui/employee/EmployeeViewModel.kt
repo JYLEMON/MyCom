@@ -46,7 +46,6 @@ class EmployeeViewModel(
             EmployeeEvent.SaveEmployee -> {
                 val empName = state.value.empName
                 val email = state.value.email
-
                 if(empName.isBlank() || email.isBlank()) {
                     return
                 }
@@ -61,7 +60,7 @@ class EmployeeViewModel(
                 _state.update { it.copy(
                     isAddingEmployee = false,
                     empName = "",
-                    email = ""
+                    email = "",
                 ) }
             }
             is EmployeeEvent.SetEmail -> {
@@ -81,6 +80,10 @@ class EmployeeViewModel(
             }
             is EmployeeEvent.SortEmployee ->{
                 _sortType.value = event.sortType
+            }
+            is EmployeeEvent.ShowDetail -> {
+                // Set the selected employee in the state
+                _state.update { it.copy(isShowingDetail = true, selectedEmployee = event.employee) }
             }
         }
     }
