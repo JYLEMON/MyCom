@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DeleteEmployeeDialog (
+fun DeleteEmployeeDialog(
     state: EmployeeState,
     onEvent: (EmployeeEvent) -> Unit,
     modifier: Modifier = Modifier
@@ -29,7 +29,7 @@ fun DeleteEmployeeDialog (
         contentAlignment = Alignment.Center
     ) {
         AlertDialog(
-            modifier = Modifier,
+            modifier = modifier,
             onDismissRequest = {
                 onEvent(EmployeeEvent.HideDeleteDialog)
             },
@@ -45,6 +45,7 @@ fun DeleteEmployeeDialog (
                 Button(
                     onClick = {
                         onEvent(EmployeeEvent.DeleteEmployee(state.selectedEmployee ?: return@Button))
+                        onEvent(EmployeeEvent.HideDeleteDialog) // Close the dialog after deletion
                     }
                 ) {
                     Text(text = "Delete")

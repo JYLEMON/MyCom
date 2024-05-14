@@ -53,13 +53,18 @@ class EmployeeViewModel(
             EmployeeEvent.SaveEmployee -> {
                 val empName = state.value.empName
                 val email = state.value.email
-                if(empName.isBlank() || email.isBlank()) {
+                val password = state.value.password
+                val salary = state.value.salary
+
+                if(empName.isBlank() || email.isBlank() || password.isBlank()) {
                     return
                 }
 
                 val employee = Employee(
                     empName = empName,
-                    email = email
+                    email = email,
+                    password = password,
+                    salary = salary.toString()
                 )
                 viewModelScope.launch {
                     dao.upsertEmployee(employee)
@@ -68,6 +73,8 @@ class EmployeeViewModel(
                     isAddingEmployee = false,
                     empName = "",
                     email = "",
+                    password = "",
+                    salary = 2500.00,
                 ) }
             }
             is EmployeeEvent.SetEmail -> {
@@ -78,6 +85,16 @@ class EmployeeViewModel(
             is EmployeeEvent.SetName -> {
                 _state.update { it.copy(
                     empName = event.empName
+                ) }
+            }
+            is EmployeeEvent.SetPassword -> {
+                _state.update { it.copy(
+                    password = event.password
+                ) }
+            }
+            is EmployeeEvent.SetSalary -> {
+                _state.update { it.copy(
+                    salary = event.salary
                 ) }
             }
             EmployeeEvent.ShowDialog -> {

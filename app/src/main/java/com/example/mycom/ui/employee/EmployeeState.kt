@@ -6,6 +6,8 @@ data class EmployeeState (
     val employee: List<Employee> = emptyList(),
     val empName: String = "",
     val email: String = "",
+    val password: String = "",
+    val salary: Double = 2500.00,
     val isAddingEmployee: Boolean = false,
     val isShowingDetail: Boolean = false,
     val selectedEmployee: Employee? = null,
