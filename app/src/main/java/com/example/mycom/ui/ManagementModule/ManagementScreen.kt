@@ -84,6 +84,7 @@ fun ManagementApp(
         onEvent(WorkEvent.DeleteWork(work))
     }
 
+
     Scaffold(
         bottomBar = {
             NavigationBar(
