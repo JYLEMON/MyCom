@@ -107,7 +107,7 @@ fun StatusScreen(
                 modifier = Modifier.fillMaxSize(),
                 color = Color.Transparent,
                 onClick = { "" }
-                // Invoke the callback when card is clicked
+                // Invoke the callback when card is clicked..
             ) {
                 Column(
                     modifier = Modifier
