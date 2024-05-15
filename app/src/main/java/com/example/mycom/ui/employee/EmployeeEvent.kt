@@ -14,6 +14,8 @@ sealed interface EmployeeEvent {
     object HideDeleteDialog: EmployeeEvent
     data class ShowDetailDialog(val employee: Employee): EmployeeEvent
     object HideDetailDialog: EmployeeEvent
+    data class ShowEditDialog(val employee: Employee): EmployeeEvent
+    object HideEditDialog: EmployeeEvent
     data class SortEmployee(val sortType: SortType): EmployeeEvent
     data class DeleteEmployee(val employee: Employee): EmployeeEvent
 
