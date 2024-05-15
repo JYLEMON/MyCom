@@ -1,5 +1,7 @@
 package com.example.mycom
 
+import StatusNavigationHost
+import StatusScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,6 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
+import com.example.managementsystem.Data.WorkDatabase
+import com.example.managementsystem.ManagementModule.WorkViewModel
 import com.example.mycom.data.EmployeeData
 import com.example.mycom.data.EmployeeDatabase
 import com.example.mycom.ui.employee.EmployeeScreenTest
@@ -42,6 +46,24 @@ class MainActivity : ComponentActivity() {
         }
     )
 
+    private val workdb by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            WorkDatabase::class.java,
+            "workList.db"
+        ).build()
+    }
+
+    private val workViewModel by viewModels<WorkViewModel> (
+        factoryProducer = {
+            object : ViewModelProvider.Factory {
+                override fun <U : ViewModel> create (modelClass: Class<U>): U {
+                    return WorkViewModel(workdb.dao) as U
+                }
+            }
+        }
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -49,7 +71,9 @@ class MainActivity : ComponentActivity() {
             MyComTheme {
                 // A surface container using the 'background' color from the theme
                 val state by viewModel.state.collectAsState()
-                EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
+                val workState by workViewModel.state.collectAsState()
+                //EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
+                StatusNavigationHost(workListState = workState)
             }
         }
     }
