@@ -1,11 +1,14 @@
 package com.example.mycom.ui.employee
 
+import ShowEditDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -14,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.mycom.data.Employee
 
 @Composable
 fun ShowDetailDialog(
@@ -22,7 +24,7 @@ fun ShowDetailDialog(
     onEvent: (EmployeeEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val selectedEmployee = state.selectedEmployee ?: return // Return early if selectedEmployee is null
+    val selectedEmployee = state.selectedEmployee ?: return
 
     Box(
         modifier = Modifier
@@ -47,14 +49,30 @@ fun ShowDetailDialog(
                 }
             },
             confirmButton = {
-                Button(
-                    onClick = { onEvent(EmployeeEvent.HideDetailDialog) }
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "Close")
+                    Button(
+                        onClick = {
+                            // Trigger the edit event with the selected employee
+                            onEvent(EmployeeEvent.ShowEditDialog(selectedEmployee))
+
+                        }
+                    ) {
+                        Text(text = "Edit")
+                    }
+                    Button(
+                        onClick = { onEvent(EmployeeEvent.HideDetailDialog) }
+                    ) {
+                        Text(text = "Close")
+                    }
                 }
             }
         )
+        if (state.isEditingEmployee) {
+            ShowEditDialog(state = state, onEvent = onEvent)
+        }
     }
 }
-
-

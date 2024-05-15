@@ -32,6 +32,13 @@ class EmployeeViewModel(
 
     fun onEvent(event: EmployeeEvent) {
         when(event) {
+            is EmployeeEvent.ShowEditDialog -> {
+                _state.update { it.copy(isEditingEmployee = true) }
+            }
+            is EmployeeEvent.HideEditDialog -> {
+                _state.update { it.copy(isEditingEmployee = false) }
+            }
+
             is EmployeeEvent.DeleteEmployee -> {
                 viewModelScope.launch {
                     dao.deleteEmployee(event.employee)
