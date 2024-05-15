@@ -9,45 +9,46 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.mycom.data.Employee
 
 @Composable
-fun ShowDetail(
-    employee: Employee,
-    onClose: () -> Unit
+fun ShowDetailDialog(
+    state: EmployeeState,
+    onEvent: (EmployeeEvent) -> Unit,
+    modifier: Modifier = Modifier
 ) {
+    val selectedEmployee = state.selectedEmployee ?: return // Return early if selectedEmployee is null
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black.copy(alpha = 0.5f)) // Semi-transparent black color
-            .clickable(onClick = onClose), // Close the dialog on background click
+            .background(Color.Black.copy(alpha = 0.5f))
+            .clickable(onClick = { onEvent(EmployeeEvent.HideDetailDialog) }),
         contentAlignment = Alignment.Center
     ) {
         AlertDialog(
-            modifier = Modifier,
-            onDismissRequest = onClose,
+            modifier = modifier,
+            onDismissRequest = { onEvent(EmployeeEvent.HideDetailDialog) },
             title = { Text(text = "Employee Details") },
             text = {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(text = "Name: ${employee.empName}")
-                    Text(text = "Email: ${employee.email}")
-
-                    // Add more details as needed
+                    Text(text = "ID: ${selectedEmployee.empId}")
+                    Text(text = "Name: ${selectedEmployee.empName}")
+                    Text(text = "Email: ${selectedEmployee.email}")
+                    Text(text = "Password: ${selectedEmployee.password}")
+                    Text(text = "Salary: ${selectedEmployee.salary}")
                 }
             },
             confirmButton = {
-                // Add a button to close the dialog
                 Button(
-                    onClick = onClose
+                    onClick = { onEvent(EmployeeEvent.HideDetailDialog) }
                 ) {
                     Text(text = "Close")
                 }
@@ -55,3 +56,5 @@ fun ShowDetail(
         )
     }
 }
+
+

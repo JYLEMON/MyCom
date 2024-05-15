@@ -113,9 +113,17 @@ class EmployeeViewModel(
                 _sortType.value = event.sortType
             }
 
-            is EmployeeEvent.ShowDetail -> {
-                // Set the selected employee in the state
-                _state.update { it.copy(isShowingDetail = true, selectedEmployee = event.employee) }
+            is EmployeeEvent.ShowDetailDialog -> {
+                _state.update { it.copy(
+                    isShowingDetail = true,
+                    selectedEmployee = event.employee
+                ) }
+            }
+
+            is EmployeeEvent.HideDetailDialog -> {
+                _state.update { it.copy(
+                    isShowingDetail = false,
+                ) }
             }
         }
     }

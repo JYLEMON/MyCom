@@ -1,6 +1,5 @@
 package com.example.mycom.ui.employee
 
-import android.content.ClipData.Item
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -62,9 +61,8 @@ fun EmployeeScreenTest(
                     contentDescription = "Add Employee"
                 )
             }
-        },
-
-        ) { padding ->
+        }
+    ) { padding ->
         if (state.isAddingEmployee) {
             AddEmployeeDialog(state = state, onEvent = onEvent)
         }
@@ -84,8 +82,9 @@ fun EmployeeScreenTest(
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = Color.Transparent,
-                        onClick = {  onEvent(EmployeeEvent.ShowDetail(employee)) }
-                        // Invoke the callback when card is clicked
+                        onClick = {
+                            onEvent(EmployeeEvent.ShowDetailDialog(employee))
+                        }
                     ) {
                         Row(
                             modifier = Modifier
@@ -123,18 +122,21 @@ fun EmployeeScreenTest(
             }
         }
 
+        if (state.isShowingDetail) {
+            ShowDetailDialog(state = state, onEvent = onEvent)
+        }
+
         if (state.isDeletingEmployee) {
             DeleteEmployeeDialog(state = state, onEvent = onEvent)
         }
     }
 }
+
 @Preview(
     showSystemUi = true,
     showBackground = true
 )
 @Composable
 fun EmployeeTestPreview() {
-    EmployeeScreenTest(state = EmployeeState()) {
-
-    }
+    EmployeeScreenTest(state = EmployeeState()) {}
 }
