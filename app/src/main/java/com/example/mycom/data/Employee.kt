@@ -10,5 +10,6 @@ data class Employee (
     val password: String,
     val salary: String,
     @PrimaryKey(autoGenerate = true)
-    val empId: Int = 0
+    val idCount: Int = 0,
+    val empId: String = "E$idCount"
 )
