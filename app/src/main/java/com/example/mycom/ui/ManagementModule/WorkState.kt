@@ -8,6 +8,8 @@ data class WorkState(
     val workTitle: String = "",
     val workDescription: String = "",
     val handlerEmail: String = "",
+    val workID: String = "",
+    val count: Int = 0,
     val isAddingWork: Boolean = false,
     val sortType: WorkSortType = WorkSortType.WORK_TITLE
 )

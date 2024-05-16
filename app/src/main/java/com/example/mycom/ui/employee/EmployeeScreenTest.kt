@@ -48,6 +48,8 @@ fun EmployeeScreenTest(
     state: EmployeeState,
     onEvent: (EmployeeEvent) -> Unit
 ) {
+    var deleteEmployee by remember { mutableStateOf<Employee?>(null) }
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -109,6 +111,7 @@ fun EmployeeScreenTest(
                                 )
                             }
                             IconButton(onClick = {
+                                deleteEmployee = employee
                                 onEvent(EmployeeEvent.ShowDeleteDialog)
                             }) {
                                 Icon(
@@ -127,7 +130,14 @@ fun EmployeeScreenTest(
         }
 
         if (state.isDeletingEmployee) {
-            DeleteEmployeeDialog(state = state, onEvent = onEvent)
+            DeleteEmployeeDialog(
+                state = state,
+                onEvent = onEvent,
+                deleteEmployee = (deleteEmployee!!),
+                onDeleteEmployee = {
+                    deleteEmployee = null
+                }
+                )
         }
     }
 }

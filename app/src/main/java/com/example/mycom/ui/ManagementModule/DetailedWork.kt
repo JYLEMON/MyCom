@@ -100,7 +100,7 @@ fun WorkDetailScreen(
 
                 Row(verticalAlignment = Alignment.CenterVertically){
                     Text(
-                        text = "Email: ",
+                        text = "Description: ",
                         modifier = Modifier.padding(end = 8.dp),
                         fontSize = 18.sp // Increase font size
                     )
@@ -110,6 +110,26 @@ fun WorkDetailScreen(
                     ) {
                         Text(
                             text = "${workDetail.description}",
+                            modifier = Modifier.padding(8.dp),
+                            fontSize = 18.sp // Increase font size
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(verticalAlignment = Alignment.CenterVertically){
+                    Text(
+                        text = "Email: ",
+                        modifier = Modifier.padding(end = 8.dp),
+                        fontSize = 18.sp // Increase font size
+                    )
+                    Card(
+                        modifier = Modifier.fillMaxWidth(), // Make the card fill the width
+
+                    ) {
+                        Text(
+                            text = "${workDetail.email}",
                             modifier = Modifier.padding(8.dp),
                             fontSize = 18.sp // Increase font size
                         )

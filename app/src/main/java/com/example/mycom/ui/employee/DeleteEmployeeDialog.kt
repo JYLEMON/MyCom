@@ -14,13 +14,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.mycom.data.Employee
 
 @Composable
 fun DeleteEmployeeDialog(
     state: EmployeeState,
     onEvent: (EmployeeEvent) -> Unit,
+    deleteEmployee: Employee,
+    onDeleteEmployee:() -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val emptyEmployee:Employee? = null
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -44,8 +49,9 @@ fun DeleteEmployeeDialog(
             confirmButton = {
                 Button(
                     onClick = {
-                        onEvent(EmployeeEvent.DeleteEmployee(state.selectedEmployee ?: return@Button))
+                        onEvent(EmployeeEvent.DeleteEmployee(deleteEmployee))
                         onEvent(EmployeeEvent.HideDeleteDialog) // Close the dialog after deletion
+                        onDeleteEmployee()
                     }
                 ) {
                     Text(text = "Delete")
@@ -55,6 +61,7 @@ fun DeleteEmployeeDialog(
                 Button(
                     onClick = {
                         onEvent(EmployeeEvent.HideDeleteDialog)
+                        onDeleteEmployee()
                     }
                 ) {
                     Text(text = "Cancel")

@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.example.managementsystem.Data.WorkDatabase
+import com.example.managementsystem.ManagementModule.ManagementApp
 import com.example.managementsystem.ManagementModule.WorkViewModel
 import com.example.mycom.data.EmployeeData
 import com.example.mycom.data.EmployeeDatabase
@@ -73,7 +74,8 @@ class MainActivity : ComponentActivity() {
                 val state by viewModel.state.collectAsState()
                 val workState by workViewModel.state.collectAsState()
                 //EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
-                StatusNavigationHost(workListState = workState)
+                //StatusNavigationHost(workListState = workState)
+                ManagementApp(state = workState, onEvent = workViewModel::onEvent)
             }
         }
     }
