@@ -11,5 +11,5 @@ data class Employee (
     val salary: String,
     @PrimaryKey(autoGenerate = true)
     val idCount: Int = 0,
-    val empId: String = "E${String.format("%03d", idCount)}"
+    val empId: String = "E$idCount"
 )
