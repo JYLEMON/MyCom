@@ -24,7 +24,7 @@ fun AddWorkScreen(
 ) {
     val nextId = remember {
         mutableStateOf(
-            calculateNextId(WorkListData.workList.map { it.id })
+            calculateNextId(state.workList.map { it.workID.toString() })
         )
     }
 
@@ -32,7 +32,7 @@ fun AddWorkScreen(
         modifier = Modifier.padding(16.dp)
     ) {
         Row(modifier = Modifier.padding(vertical = 8.dp)) {
-            Text(text = "ID : E${nextId.value.toString().padStart(3, '0')}",
+            Text(text = "ID : W${nextId.value.toString().padStart(3, '0')}",
                 fontSize = 18.sp
             ) // Display the next available ID
         }
@@ -56,6 +56,18 @@ fun AddWorkScreen(
                 value = state.workDescription,
                 onValueChange = {
                     onEvent(WorkEvent.SetDescription(it))
+                },
+                modifier = Modifier.weight(1f)
+            )
+        }
+
+        Row(modifier = Modifier.padding(vertical = 8.dp)) {
+            Text(text = "Handler Email:")
+            Spacer(modifier = Modifier.width(16.dp))
+            OutlinedTextField(
+                value = state.handlerEmail,
+                onValueChange = {
+                    onEvent(WorkEvent.SetEmail(it))
                 },
                 modifier = Modifier.weight(1f)
             )

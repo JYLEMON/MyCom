@@ -48,6 +48,8 @@ class WorkViewModel(
                 val workTitle = state.value.workTitle
                 val workDescription = state.value.workDescription
                 val handlerEmail = state.value.handlerEmail
+                val displayID = state.value.count+1
+                val workID = "W${displayID.toString().padStart(3,'0')}"
 
                 if(workTitle.isBlank() || workDescription.isBlank()) {
                     return
@@ -56,7 +58,8 @@ class WorkViewModel(
                 val work = Work(
                     workTitle = workTitle,
                     workDescription = workDescription,
-                    contactEmail = handlerEmail
+                    contactEmail = handlerEmail,
+                    workID = workID
                 )
                 viewModelScope.launch {
                     dao.upsertWork(work)
@@ -65,7 +68,9 @@ class WorkViewModel(
                     isAddingWork = false,
                     workTitle = "",
                     workDescription = "",
-                    handlerEmail = ""
+                    handlerEmail = "",
+                    workID = "",
+                    count = state.value.count + 1
                 ) }
             }
 
@@ -79,6 +84,11 @@ class WorkViewModel(
                     workDescription = event.description
                 ) }
             }
+            is WorkEvent.SetEmail -> {
+                _state.update { it.copy(
+                    handlerEmail = event.email
+                ) }
+            }
             WorkEvent.ShowDialog -> {
                 _state.update { it.copy(
                     isAddingWork = true
@@ -87,6 +97,7 @@ class WorkViewModel(
             is WorkEvent.SortWork -> {
                 _sortType.value = event.sortType
             }
+            else -> {}
         }
     }
 }

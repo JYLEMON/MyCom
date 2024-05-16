@@ -7,6 +7,7 @@ sealed interface WorkEvent {
     object SaveWork:WorkEvent
     data class SetTitle(val title: String): WorkEvent
     data class SetDescription(val description: String): WorkEvent
+    data class SetEmail(val email:String): WorkEvent
     object ShowDialog: WorkEvent
     object HideDialog: WorkEvent
     data class SortWork(val sortType: WorkSortType): WorkEvent

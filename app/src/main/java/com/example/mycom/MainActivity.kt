@@ -1,18 +1,28 @@
 package com.example.mycom
 
-
+import StatusNavigationHost
+import StatusScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.example.managementsystem.Data.WorkDatabase
+import com.example.managementsystem.ManagementModule.ManagementApp
 import com.example.managementsystem.ManagementModule.WorkViewModel
+import com.example.mycom.data.EmployeeData
 import com.example.mycom.data.EmployeeDatabase
 import com.example.mycom.ui.employee.EmployeeScreenTest
 import com.example.mycom.ui.employee.EmployeeViewModel
@@ -65,7 +75,7 @@ class MainActivity : ComponentActivity() {
                 val workState by workViewModel.state.collectAsState()
                 //EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
                 //StatusNavigationHost(workListState = workState)
-                EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
+                ManagementApp(state = workState, onEvent = workViewModel::onEvent)
             }
         }
     }
