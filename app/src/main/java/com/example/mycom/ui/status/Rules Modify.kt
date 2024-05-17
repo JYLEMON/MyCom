@@ -132,6 +132,7 @@ fun EditTime(
                         onEvent(TimePickerEvent.SaveStartTime)
                         onEvent(TimePickerEvent.HideStartTimeDialog)
                     }
+
                     if (state.isSettingEndTime) {
                         onEvent(TimePickerEvent.SetEndHour(timePickerState.hour))
                         onEvent(TimePickerEvent.SetEndMinute(timePickerState.minute))
