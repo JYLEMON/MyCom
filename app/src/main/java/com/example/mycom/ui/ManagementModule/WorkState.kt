@@ -11,5 +11,6 @@ data class WorkState(
     val workID: String = "",
     val count: Int = 0,
     val isAddingWork: Boolean = false,
-    val sortType: WorkSortType = WorkSortType.WORK_TITLE
+    val selectedWork: Work? = null,
+    val sortType: WorkSortType = WorkSortType.WORK_ID
 )

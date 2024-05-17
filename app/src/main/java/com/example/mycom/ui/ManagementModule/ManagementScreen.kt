@@ -88,6 +88,8 @@ fun ManagementApp(
         onEvent(WorkEvent.DeleteWork(work))
     }
 
+    //Insert Default Data
+    onTimeEvent(TimePickerEvent.SaveDefaultTime)
 
     Scaffold(
         bottomBar = {
@@ -123,6 +125,7 @@ fun ManagementApp(
                     },
                     onWorkSelected = { work ->
                         selectedWork = work
+                        onEvent(WorkEvent.SetSelectedWork(work))
                         navController.navigate(ManagementScreen.detailedWork.name)
                     },
                     onDeleteWork = onDeleteWork
@@ -151,12 +154,20 @@ fun ManagementApp(
                         initialDescriptionField = work.workDescription,
                         initialEmailField = work.contactEmail
                     ) { updatedTitle, updatedDescription, updatedEmail ->
-                        val updatedWork = Work(
+                        if(state.selectedWork != null){
+                            onEvent(
+                                WorkEvent.UpdateWork(
+                                    workTitle = updatedTitle,
+                                    workDescription = updatedDescription,
+                                    contactEmail = updatedEmail
+                                )
+                            )
+                        }
+                        selectedWork = Work(
                             workTitle = updatedTitle,
-                            id = work.id,
-                            workID = work.workID,
                             workDescription = updatedDescription,
-                            contactEmail = updatedEmail
+                            contactEmail = updatedEmail,
+                            workID = work.workID
                         )
                         navController.popBackStack()
                     }

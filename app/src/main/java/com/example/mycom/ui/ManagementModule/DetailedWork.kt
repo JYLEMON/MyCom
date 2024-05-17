@@ -35,120 +35,102 @@ fun WorkDetailScreen(
     onWorkDetailsChange: (WorkDetail) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var isEditMode by remember { mutableStateOf(false) }
-
-    if (isEditMode) {
-        ModifyWorkScreen(
-            initialTitleField = workDetail.title,
-            initialDescriptionField = workDetail.description,
-            initialEmailField = workDetail.email
-        ) { updatedTitle, updatedDescription, updatedEmail ->
-            val updatedDetails = workDetail.copy(
-                title = updatedTitle,
-                description = updatedDescription,
-                email = updatedEmail
-            )
-            onWorkDetailsChange(updatedDetails)
-            isEditMode = false
-        }
-    } else {
-        Box(modifier = modifier
-            .padding(vertical = 8.dp, horizontal = 8.dp)
-            .fillMaxSize()
-        ) {
-            Column {
-                Row(verticalAlignment = Alignment.CenterVertically){
-                    Text(
-                        text = "Name:",
-                        modifier = Modifier.padding(end = 8.dp),
-                        fontSize = 18.sp // Increase font size
-                    )
-                    Card(
-                        modifier = Modifier.fillMaxWidth(), // Make the card fill the width
-
-                    ) {
-                        Text(
-                            text = "${workDetail.title}",
-                            modifier = Modifier.padding(8.dp),
-                            fontSize = 18.sp // Increase font size
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(verticalAlignment = Alignment.CenterVertically){
-                    Text(
-                        text = "ID:",
-                        modifier = Modifier.padding(end = 8.dp),
-                        fontSize = 18.sp // Increase font size
-                    )
-                    Spacer(modifier = Modifier.width(30.dp))
-                    Card(
-                        modifier = Modifier.fillMaxWidth(), // Make the card fill the width
-
-                    ) {
-                        Text(
-                            text = "${workDetail.id}",
-                            modifier = Modifier.padding(8.dp),
-                            fontSize = 18.sp // Increase font size
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(verticalAlignment = Alignment.CenterVertically){
-                    Text(
-                        text = "Description: ",
-                        modifier = Modifier.padding(end = 8.dp),
-                        fontSize = 18.sp // Increase font size
-                    )
-                    Card(
-                        modifier = Modifier.fillMaxWidth(), // Make the card fill the width
-
-                    ) {
-                        Text(
-                            text = "${workDetail.description}",
-                            modifier = Modifier.padding(8.dp),
-                            fontSize = 18.sp // Increase font size
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(verticalAlignment = Alignment.CenterVertically){
-                    Text(
-                        text = "Email: ",
-                        modifier = Modifier.padding(end = 8.dp),
-                        fontSize = 18.sp // Increase font size
-                    )
-                    Card(
-                        modifier = Modifier.fillMaxWidth(), // Make the card fill the width
-
-                    ) {
-                        Text(
-                            text = "${workDetail.email}",
-                            modifier = Modifier.padding(8.dp),
-                            fontSize = 18.sp // Increase font size
-                        )
-                    }
-                }
-            }
-
-            FloatingActionButton(
-                onClick = onEditClick,
-                shape = CircleShape,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Edit, // Use the Edit icon
-                    contentDescription = "Edit"
+    Box(modifier = modifier
+        .padding(vertical = 8.dp, horizontal = 8.dp)
+        .fillMaxSize()
+    ) {
+        Column {
+            Row(verticalAlignment = Alignment.CenterVertically){
+                Text(
+                    text = "Name:",
+                    modifier = Modifier.padding(end = 8.dp),
+                    fontSize = 18.sp // Increase font size
                 )
+                Card(
+                    modifier = Modifier.fillMaxWidth(), // Make the card fill the width
+
+                ) {
+                    Text(
+                        text = "${workDetail.title}",
+                        modifier = Modifier.padding(8.dp),
+                        fontSize = 18.sp // Increase font size
+                    )
+                }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically){
+                Text(
+                    text = "ID:",
+                    modifier = Modifier.padding(end = 8.dp),
+                    fontSize = 18.sp // Increase font size
+                )
+                Spacer(modifier = Modifier.width(30.dp))
+                Card(
+                    modifier = Modifier.fillMaxWidth(), // Make the card fill the width
+
+                ) {
+                    Text(
+                        text = "${workDetail.id}",
+                        modifier = Modifier.padding(8.dp),
+                        fontSize = 18.sp // Increase font size
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically){
+                Text(
+                    text = "Description: ",
+                    modifier = Modifier.padding(end = 8.dp),
+                    fontSize = 18.sp // Increase font size
+                )
+                Card(
+                    modifier = Modifier.fillMaxWidth(), // Make the card fill the width
+
+                ) {
+                    Text(
+                        text = "${workDetail.description}",
+                        modifier = Modifier.padding(8.dp),
+                        fontSize = 18.sp // Increase font size
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically){
+                Text(
+                    text = "Email: ",
+                    modifier = Modifier.padding(end = 8.dp),
+                    fontSize = 18.sp // Increase font size
+                )
+                Card(
+                    modifier = Modifier.fillMaxWidth(), // Make the card fill the width
+
+                ) {
+                    Text(
+                        text = "${workDetail.email}",
+                        modifier = Modifier.padding(8.dp),
+                        fontSize = 18.sp // Increase font size
+                    )
+                }
+            }
+        }
+
+        FloatingActionButton(
+            onClick = onEditClick,
+            shape = CircleShape,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Edit, // Use the Edit icon
+                contentDescription = "Edit"
+            )
         }
     }
 }
