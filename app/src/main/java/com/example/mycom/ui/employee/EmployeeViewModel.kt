@@ -84,6 +84,7 @@ class EmployeeViewModel(
                     salary = 2500.00,
                 ) }
             }
+
             is EmployeeEvent.SetEmail -> {
                 _state.update { it.copy(
                     email = event.email

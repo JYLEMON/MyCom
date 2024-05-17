@@ -12,4 +12,5 @@ sealed interface WorkEvent {
     object HideDialog: WorkEvent
     data class SortWork(val sortType: WorkSortType): WorkEvent
     data class DeleteWork(val work: Work): WorkEvent
+    data class UpdateWork(val work: Work): WorkEvent
 }
