@@ -1,5 +1,5 @@
 package com.example.mycom.ui.ManagementModule;
 
 public enum WorkSortType {
-    WORK_TITLE,
+    WORK_ID,
 }

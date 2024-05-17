@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
         factoryProducer = {
             object : ViewModelProvider.Factory {
                 override fun <U : ViewModel> create (modelClass: Class<U>): U {
-                    return WorkViewModel(workdb.dao) as U
+                    return WorkViewModel(application, workdb.dao) as U
                 }
             }
         }
@@ -87,7 +87,8 @@ class MainActivity : ComponentActivity() {
                 val state by viewModel.state.collectAsState()
                 val workState by workViewModel.state.collectAsState()
                 val timeRangeState by timeRangeViewModel.state.collectAsState()
-                EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
+                //EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
+                ManagementApp(state = workState, onEvent = workViewModel::onEvent, timeRangeState = timeRangeState, onTimeEvent = timeRangeViewModel::onEvent)
             }
         }
     }
