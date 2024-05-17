@@ -24,8 +24,10 @@ import com.example.managementsystem.ManagementModule.ManagementApp
 import com.example.managementsystem.ManagementModule.WorkViewModel
 import com.example.mycom.data.EmployeeData
 import com.example.mycom.data.EmployeeDatabase
+import com.example.mycom.timeRangeData.TimeRangeDatabase
 import com.example.mycom.ui.employee.EmployeeScreenTest
 import com.example.mycom.ui.employee.EmployeeViewModel
+import com.example.mycom.ui.status.TimeRangeViewModel
 import com.example.mycom.ui.theme.MyComTheme
 
 class MainActivity : ComponentActivity() {
@@ -65,6 +67,24 @@ class MainActivity : ComponentActivity() {
         }
     )
 
+    private val timedb by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            TimeRangeDatabase::class.java,
+            "timeRange.db"
+        ).build()
+    }
+
+    private val timeRangeViewModel by viewModels<TimeRangeViewModel> (
+        factoryProducer = {
+            object : ViewModelProvider.Factory {
+                override fun <V : ViewModel> create (modelClass: Class<V>): V {
+                    return TimeRangeViewModel(timedb.dao) as V
+                }
+            }
+        }
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -73,9 +93,15 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 val state by viewModel.state.collectAsState()
                 val workState by workViewModel.state.collectAsState()
-                //EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
+                val timeRangeState by timeRangeViewModel.state.collectAsState()
+                EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
                 //StatusNavigationHost(workListState = workState)
-                ManagementApp(state = workState, onEvent = workViewModel::onEvent)
+                /*ManagementApp(
+                    state = workState,
+                    onEvent = workViewModel::onEvent,
+                    timeRangeState = timeRangeState,
+                    onTimeEvent = timeRangeViewModel::onEvent
+                )*/
             }
         }
     }

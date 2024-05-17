@@ -26,6 +26,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.managementsystem.Data.Work
 import com.example.mycom.R
+import com.example.mycom.ui.status.TimePickerEvent
+import com.example.mycom.ui.status.TimeRangeState
 import com.example.mycom.ui.theme.MyComTheme
 
 enum class ManagementScreen(@StringRes val title: Int) {
@@ -70,7 +72,9 @@ fun NavigationBar(
 fun ManagementApp(
     navController: NavHostController = rememberNavController(),
     state: WorkState,
-    onEvent: (WorkEvent) -> Unit
+    onEvent: (WorkEvent) -> Unit,
+    timeRangeState: TimeRangeState,
+    onTimeEvent: (TimePickerEvent) -> Unit
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
 
@@ -104,7 +108,7 @@ fun ManagementApp(
                 MainScreen()
             }
             composable(route = ManagementScreen.ruleSet.name) {
-                ShowRulesScreen()
+                ShowRulesScreen(state = timeRangeState, onEvent = onTimeEvent)
             }
             composable(route = ManagementScreen.workAssign.name) {
                 AddWorkScreen(state = state, onEvent = onEvent) {
@@ -165,7 +169,12 @@ fun ManagementApp(
 @Preview
 @Composable
 fun managementSystemPreview(){
-    MyComTheme{
-        ManagementApp(state = WorkState()) {}
+    MyComTheme {
+        ManagementApp(
+            state = WorkState(),
+            onEvent = {},
+            timeRangeState = TimeRangeState(),
+            onTimeEvent = {}
+        )
     }
 }

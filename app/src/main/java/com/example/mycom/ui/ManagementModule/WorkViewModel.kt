@@ -74,6 +74,9 @@ class WorkViewModel(
                 ) }
             }
 
+            is WorkEvent.UpdateWork -> {
+            }
+
             is WorkEvent.SetTitle -> {
                 _state.update { it.copy(
                     workTitle = event.title
