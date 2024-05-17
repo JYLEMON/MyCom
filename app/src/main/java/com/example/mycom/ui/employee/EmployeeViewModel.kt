@@ -1,23 +1,29 @@
 package com.example.mycom.ui.employee
 
-import androidx.lifecycle.ViewModel
+import PreferencesManager
 import androidx.lifecycle.viewModelScope
 import com.example.mycom.data.Employee
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 
 class EmployeeViewModel(
+    application: Application,
     private val dao: EmployeeDao
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
-    private val _sortType = MutableStateFlow(SortType.EMP_NAME)
+    private val preferencesManager = PreferencesManager(application)
+
+    private val _sortType = MutableStateFlow(SortType.EMP_ID)
     private val _employees = _sortType
         .flatMapLatest { sortType ->
-            when(sortType) {
-                SortType.EMP_NAME -> dao.getEmployeeOrderedByName()
+            when (sortType) {
+                SortType.EMP_ID -> dao.getEmployeeOrderedById()
             }
         }
-    private val _state = MutableStateFlow(EmployeeState())
+
+    private val _state = MutableStateFlow(EmployeeState(count = preferencesManager.getCount()))
     val state: StateFlow<EmployeeState> = combine(_state, _sortType, _employees) { state, sortType, employees ->
         state.copy(
             employee = employees,
@@ -26,7 +32,7 @@ class EmployeeViewModel(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), EmployeeState())
 
     fun onEvent(event: EmployeeEvent) {
-        when(event) {
+        when (event) {
             // Show/Hide Edit Dialog
             is EmployeeEvent.ShowEditDialog -> {
                 _state.update { it.copy(isEditingEmployee = true, selectedEmployee = event.employee) }
@@ -70,7 +76,7 @@ class EmployeeViewModel(
                 val email = state.value.email
                 val password = state.value.password
                 val salary = state.value.salary
-                val id = state.value.count + 1
+                val id = preferencesManager.getCount() + 1
                 val employeeId = "E${id.toString().padStart(3, '0')}"
 
                 if (empName.isBlank() || email.isBlank() || password.isBlank()) {
@@ -87,6 +93,7 @@ class EmployeeViewModel(
                 viewModelScope.launch {
                     dao.upsertEmployee(employee)
                 }
+                preferencesManager.setCount(id)
                 _state.update {
                     it.copy(
                         isAddingEmployee = false,
@@ -94,7 +101,7 @@ class EmployeeViewModel(
                         email = "",
                         password = "",
                         salary = 2500.00,
-                        count = state.value.count + 1
+                        count = id
                     )
                 }
             }
