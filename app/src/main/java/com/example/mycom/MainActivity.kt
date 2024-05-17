@@ -72,8 +72,8 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 val state by viewModel.state.collectAsState()
                 val workState by workViewModel.state.collectAsState()
-                //EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
-                StatusNavigationHost(workListState = workState)
+                EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
+                //StatusNavigationHost(workListState = workState)
             }
         }
     }
