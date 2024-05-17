@@ -31,18 +31,22 @@ class AttendanceViewModel(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AttendanceState())
 
-    fun onEvent(event: AttendanceEvent){
-        when(event){
+    fun onEvent(event: AttendanceEvent) {
+        when (event) {
             is AttendanceEvent.DeleteAttendance -> {
                 viewModelScope.launch {
                     attedao.deleteattendance(event.attendance)
                 }
             }
+
             AttendanceEvent.HideAttendanceList -> {
-                _state.update { it.copy(
-                    isAddingAttendance = false
-                ) }
+                _state.update {
+                    it.copy(
+                        isAddingAttendance = false
+                    )
+                }
             }
+
             AttendanceEvent.SaveAttendance -> {
                 val attenddate = state.value.attenddate
                 val lateorattend = state.value.lateorattend
@@ -50,63 +54,84 @@ class AttendanceViewModel(
                 val punchinouttime = state.value.punchinouttime
                 val staffid = state.value.staffid
 
-                if(attenddate.isBlank() || lateorattend.isBlank()||punchintime.isBlank()||punchinouttime.isBlank()||staffid.isBlank()) {
+                if (attenddate.isBlank() || lateorattend.isBlank() || punchintime.isBlank() || punchinouttime.isBlank() || staffid.isBlank()) {
                     return
                 }
-                val attandence =Attendance(
+                val attandence = Attendance(
                     attenddate = attenddate,
                     lateorattend = lateorattend,
                     punchintime = punchintime,
-                    punchinouttime =punchinouttime,
+                    punchinouttime = punchinouttime,
                     staffid = staffid
                 )
                 viewModelScope.launch {
                     attedao.upsertAttendance(attandence)
 
                 }
-                _state.update { it.copy(
-                    isAddingAttendance = false,
-                    attenddate = "",
-                    lateorattend = "",
-                    punchintime = "",
-                    punchinouttime ="",
-                    staffid = ""
-                ) }
+                _state.update {
+                    it.copy(
+                        isAddingAttendance = false,
+                        attenddate = "",
+                        lateorattend = "",
+                        punchintime = "",
+                        punchinouttime = "",
+                        staffid = ""
+                    )
+                }
             }
 
             is AttendanceEvent.SetAttendDate -> {
-                _state.update { it.copy(
-                    attenddate = event.attenddate
-                ) }
+                _state.update {
+                    it.copy(
+                        attenddate = event.attenddate
+                    )
+                }
             }
+
             is AttendanceEvent.SetLateOrAttend -> {
-                _state.update { it.copy(
-                    lateorattend = event.lateorattend
-                ) }
+                _state.update {
+                    it.copy(
+                        lateorattend = event.lateorattend
+                    )
+                }
             }
+
             is AttendanceEvent.SetPunchInTime -> {
-                _state.update { it.copy(
-                    punchintime = event.punchintime
-                ) }
+                _state.update {
+                    it.copy(
+                        punchintime = event.punchintime
+                    )
+                }
             }
+
             is AttendanceEvent.SetPunchOutTime -> {
-                _state.update { it.copy(
-                    punchinouttime = event.punchinouttime
-                ) }
+                _state.update {
+                    it.copy(
+                        punchinouttime = event.punchinouttime
+                    )
+                }
             }
+
             is AttendanceEvent.Setstaffid -> {
-                _state.update { it.copy(
-                    staffid = event.staffid
-                ) }
+                _state.update {
+                    it.copy(
+                        staffid = event.staffid
+                    )
+                }
             }
+
             AttendanceEvent.ShowAttendanceList -> {
-                _state.update { it.copy(
-                    isAddingAttendance = true
-                ) }
+                _state.update {
+                    it.copy(
+                        isAddingAttendance = true
+                    )
+                }
             }
+
             is AttendanceEvent.SortAttendance -> {
                 _attendancesortType.value = event.attendanceSortType
             }
         }
+
     }
 }

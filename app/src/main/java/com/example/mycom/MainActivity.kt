@@ -20,7 +20,9 @@ import com.example.myapplication.Database.ApprovalDatabase
 import com.example.myapplication.DatabaseApproval.ApprovalViewModel
 import com.example.myapplication.DatabaseAttendance.AttendanceDatabase
 import com.example.myapplication.DatabaseAttendance.AttendanceViewModel
+import com.example.myapplication.app
 import com.example.myapplication.ui.theme.Approvalscreen.StaffApprovalScreen
+import com.example.myapplication.ui.theme.otherScreen.RegisterScreen
 import com.example.mycom.data.EmployeeDatabase
 import com.example.mycom.timeRangeData.TimeRangeDatabase
 import com.example.mycom.ui.employee.EmployeeScreenTest
@@ -127,8 +129,10 @@ class MainActivity : ComponentActivity() {
                 //EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
                 val apprstate by approvalviewModel.state.collectAsState()
                 val Attesyaye by attendanceviewModel.state.collectAsState()
-                StaffApprovalScreen(state = apprstate, onEvent = approvalviewModel::onEvent)
-                //app()
+                //StaffApprovalScreen(state = apprstate, onEvent = approvalviewModel::onEvent)
+                app(state = state, onEvent = viewModel::onEvent)
+               // RegisterScreen(state = state, onEvent = viewModel::onEvent)
+
             }
         }
     }

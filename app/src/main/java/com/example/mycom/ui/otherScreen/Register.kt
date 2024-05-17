@@ -26,29 +26,33 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myapplication.DatabaseApproval.ApprovalState
+import com.example.myapplication.ui.theme.Approvalscreen.StaffApprovalScreen
 import com.example.mycom.R
+import com.example.mycom.data.Employee
+import com.example.mycom.ui.employee.EmployeeEvent
+import com.example.mycom.ui.employee.EmployeeState
 import com.example.mycom.ui.theme.MyComTheme
+import kotlinx.coroutines.delay
 
 @Composable
 fun RegisterScreen(
-    onClickButton1 : () -> Unit ={},
-    onClickButton2 : () -> Unit ={},
-    modifier : Modifier = Modifier){
-    var name by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmpassword by remember { mutableStateOf("") }
+    state: EmployeeState,
+    onEvent: (EmployeeEvent) -> Unit,
+    onClickButton1: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    var password by remember { mutableStateOf(state.password) }
+    var confirmPassword by remember { mutableStateOf("") }
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(Color.Gray)){
-        Column (modifier = Modifier
+        .background(Color.Gray)) {
+        Column(modifier = Modifier
             .fillMaxSize()
             .padding(top = 50.dp, end = 25.dp, start = 25.dp, bottom = 50.dp)
-            .background(
-                Color.LightGray
-            )) {
-            Column (modifier = Modifier.padding(top = 50.dp, end = 25.dp, start = 25.dp, bottom = 50.dp)){
+            .background(Color.LightGray)) {
+            Column(modifier = Modifier.padding(top = 50.dp, end = 25.dp, start = 25.dp, bottom = 50.dp)) {
                 Image(
                     painter = painterResource(R.drawable.images),
                     contentDescription = "Logo",
@@ -59,21 +63,19 @@ fun RegisterScreen(
                 Text(text = "STAFF REGISTER", textAlign = TextAlign.Center, fontSize = 30.sp, modifier = Modifier.fillMaxWidth())
                 Spacer(modifier = Modifier.height(20.dp))
                 TextField(
-                    value = name,
+                    value = state.empName,
                     label = { Text(text = "User Name") },
-                    onValueChange = { name = it },
+                    onValueChange = { onEvent(EmployeeEvent.SetName(it)) },
                     modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-
                 TextField(
                     label = { Text(text = "Email") },
-                    value = email,
-                    onValueChange = { email = it },
+                    value = state.email,
+                    onValueChange = { onEvent(EmployeeEvent.SetEmail(it)) },
                     modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-
                 TextField(
                     label = { Text(text = "Password") },
                     value = password,
@@ -81,39 +83,46 @@ fun RegisterScreen(
                     modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-
                 TextField(
                     label = { Text(text = "Confirm Password") },
-                    value = confirmpassword,
-                    onValueChange = { confirmpassword = it },
+                    value = confirmPassword,
+                    onValueChange = { confirmPassword = it },
                     modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
                 )
-
                 Spacer(modifier = Modifier.height(30.dp))
 
-                    Button(onClick =  onClickButton1 , colors = ButtonDefaults.buttonColors(Color(0xFFBB86FC)),modifier = Modifier.fillMaxWidth()) {
-
-                        Text(text = "REGISTER")
-                    }
-                Spacer(modifier = Modifier.height(10.dp))
-                    Button(onClick = onClickButton2,colors = ButtonDefaults.buttonColors(Color(0xFFBB86FC)), modifier = Modifier.fillMaxWidth()) {
-                        Text(text = "BACK TO LOGIN")
-
-
-                    }
+                Button(
+                    onClick = {
+                        if (password == confirmPassword) {
+                            onEvent(EmployeeEvent.SetPassword(confirmPassword))
+                            onEvent(EmployeeEvent.SetSalary(2500.00))
+                            onEvent(EmployeeEvent.SaveEmployee)
+                            password =""
+                            confirmPassword=""
+                            // Optionally clear the state or navigate away
+                            onClickButton1()
+                        } else {
+                            confirmPassword = ""
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(Color(0xFFBB86FC)),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "REGISTER")
+                }
 
             }
-
         }
-
-
     }
 }
 
-@Preview
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
 @Composable
 fun RegisterPreview() {
     MyComTheme {
-        RegisterScreen()
+        RegisterScreen(state = EmployeeState(), onEvent = {})
     }
 }

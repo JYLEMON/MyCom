@@ -20,6 +20,8 @@ import com.example.myapplication.ui.theme.otherScreen.LoginScreen
 import com.example.myapplication.ui.theme.otherScreen.ProfileScreen
 import com.example.myapplication.ui.theme.otherScreen.RegisterScreen
 import com.example.mycom.R
+import com.example.mycom.ui.employee.EmployeeEvent
+import com.example.mycom.ui.employee.EmployeeState
 
 enum class MainScreen(@StringRes val title: Int) {
     Login(title = R.string.login),
@@ -33,7 +35,11 @@ enum class MainScreen(@StringRes val title: Int) {
 
 
 @Composable
-fun app(navController: NavHostController = rememberNavController()){
+fun app(
+    navController: NavHostController = rememberNavController(),
+    state: EmployeeState,
+    onEvent: (EmployeeEvent) -> Unit,
+    ){
     // Get current back stack entry
     val backStackEntry by navController.currentBackStackEntryAsState()
     // Get the name of the current screen
@@ -85,17 +91,20 @@ fun app(navController: NavHostController = rememberNavController()){
                     navController.navigate(MainScreen.Login.name)
                 })
         }
-            composable(route = MainScreen.Register.name) {
+           composable(route = MainScreen.Register.name) {
                 RegisterScreen(
+                    state = state,
+                    onEvent =onEvent ,
                     onClickButton1 = {
-                        navController.navigate(MainScreen.Home.name)
-                },
-                    onClickButton2 = {
-                        navController.navigate(MainScreen.Login.name)
-                    }
-                )
+                        navController.popBackStack()
+                }
+        )
+
+
 
         }
+
+
 
     }
     }
