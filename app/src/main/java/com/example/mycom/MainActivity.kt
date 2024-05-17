@@ -1,7 +1,5 @@
 package com.example.mycom
 
-import StatusNavigationHost
-import StatusScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,19 +8,19 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.example.managementsystem.Data.WorkDatabase
 import com.example.managementsystem.ManagementModule.ManagementApp
 import com.example.managementsystem.ManagementModule.WorkViewModel
-import com.example.mycom.data.EmployeeData
+import com.example.myapplication.Database.ApprovalDatabase
+import com.example.myapplication.DatabaseApproval.ApprovalViewModel
+import com.example.myapplication.DatabaseAttendance.AttendanceDatabase
+import com.example.myapplication.DatabaseAttendance.AttendanceViewModel
+import com.example.myapplication.ui.theme.Approvalscreen.StaffApprovalScreen
 import com.example.mycom.data.EmployeeDatabase
 import com.example.mycom.timeRangeData.TimeRangeDatabase
 import com.example.mycom.ui.employee.EmployeeScreenTest
@@ -31,6 +29,38 @@ import com.example.mycom.ui.status.TimeRangeViewModel
 import com.example.mycom.ui.theme.MyComTheme
 
 class MainActivity : ComponentActivity() {
+    private val appr by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            ApprovalDatabase::class.java,
+            "approval.appr"
+        ).build()
+    }
+    private val atte by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            AttendanceDatabase::class.java,
+            "Attendance.atte"
+        ).build()
+    }
+    private val approvalviewModel by viewModels<ApprovalViewModel>(
+        factoryProducer = {
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return ApprovalViewModel(appr.apprdao) as T
+                }
+            }
+        }
+    )
+    private val attendanceviewModel by viewModels<AttendanceViewModel>(
+        factoryProducer = {
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return AttendanceViewModel(atte.attdao) as T
+                }
+            }
+        }
+    )
 
     private val db by lazy {
         Room.databaseBuilder(
@@ -39,11 +69,12 @@ class MainActivity : ComponentActivity() {
             "employee.db"
         ).build()
     }
+
     private val viewModel by viewModels<EmployeeViewModel>(
         factoryProducer = {
-            object  : ViewModelProvider.Factory {
+            object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return EmployeeViewModel(db.dao) as T
+                    return EmployeeViewModel(application, db.dao) as T
                 }
             }
         }
@@ -57,10 +88,10 @@ class MainActivity : ComponentActivity() {
         ).build()
     }
 
-    private val workViewModel by viewModels<WorkViewModel> (
+    private val workViewModel by viewModels<WorkViewModel>(
         factoryProducer = {
             object : ViewModelProvider.Factory {
-                override fun <U : ViewModel> create (modelClass: Class<U>): U {
+                override fun <U : ViewModel> create(modelClass: Class<U>): U {
                     return WorkViewModel(workdb.dao) as U
                 }
             }
@@ -75,10 +106,10 @@ class MainActivity : ComponentActivity() {
         ).build()
     }
 
-    private val timeRangeViewModel by viewModels<TimeRangeViewModel> (
+    private val timeRangeViewModel by viewModels<TimeRangeViewModel>(
         factoryProducer = {
             object : ViewModelProvider.Factory {
-                override fun <V : ViewModel> create (modelClass: Class<V>): V {
+                override fun <V : ViewModel> create(modelClass: Class<V>): V {
                     return TimeRangeViewModel(timedb.dao) as V
                 }
             }
@@ -90,18 +121,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyComTheme {
-                // A surface container using the 'background' color from the theme
                 val state by viewModel.state.collectAsState()
                 val workState by workViewModel.state.collectAsState()
                 val timeRangeState by timeRangeViewModel.state.collectAsState()
-                EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
-                //StatusNavigationHost(workListState = workState)
-                /*ManagementApp(
-                    state = workState,
-                    onEvent = workViewModel::onEvent,
-                    timeRangeState = timeRangeState,
-                    onTimeEvent = timeRangeViewModel::onEvent
-                )*/
+                //EmployeeScreenTest(state = state, onEvent = viewModel::onEvent)
+                val apprstate by approvalviewModel.state.collectAsState()
+                val Attesyaye by attendanceviewModel.state.collectAsState()
+                StaffApprovalScreen(state = apprstate, onEvent = approvalviewModel::onEvent)
+                //app()
             }
         }
     }
