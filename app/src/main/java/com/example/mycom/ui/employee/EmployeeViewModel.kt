@@ -3,17 +3,12 @@ package com.example.mycom.ui.employee
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mycom.data.Employee
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class EmployeeViewModel(
     private val dao: EmployeeDao
-): ViewModel() {
+) : ViewModel() {
 
     private val _sortType = MutableStateFlow(SortType.EMP_NAME)
     private val _employees = _sortType
@@ -23,7 +18,7 @@ class EmployeeViewModel(
             }
         }
     private val _state = MutableStateFlow(EmployeeState())
-    val state = combine(_state, _sortType, _employees) { state, sortType, employees ->
+    val state: StateFlow<EmployeeState> = combine(_state, _sortType, _employees) { state, sortType, employees ->
         state.copy(
             employee = employees,
             sortType = sortType
@@ -32,40 +27,53 @@ class EmployeeViewModel(
 
     fun onEvent(event: EmployeeEvent) {
         when(event) {
+            // Show/Hide Edit Dialog
             is EmployeeEvent.ShowEditDialog -> {
-                _state.update { it.copy(isEditingEmployee = true) }
+                _state.update { it.copy(isEditingEmployee = true, selectedEmployee = event.employee) }
             }
-            is EmployeeEvent.HideEditDialog -> {
-                _state.update { it.copy(isEditingEmployee = false) }
+            EmployeeEvent.HideEditDialog -> {
+                _state.update { it.copy(isEditingEmployee = false, selectedEmployee = null) }
             }
 
+            // Update Employee
+            is EmployeeEvent.UpdateEmployee -> {
+                val selectedEmployee = state.value.selectedEmployee?.copy(
+                    empName = event.empName,
+                    email = event.email,
+                    password = event.password,
+                    salary = event.salary
+                )
+                if (selectedEmployee != null) {
+                    viewModelScope.launch {
+                        dao.updateEmployee(selectedEmployee)
+                    }
+                }
+                _state.update { it.copy(isEditingEmployee = false, selectedEmployee = null) }
+            }
+
+            // Delete Employee
             is EmployeeEvent.DeleteEmployee -> {
                 viewModelScope.launch {
                     dao.deleteEmployee(event.employee)
                 }
             }
-            EmployeeEvent.HideDialog -> {
-                _state.update {it.copy(
-                    isAddingEmployee = false
-                ) }
-
-            }
-
             EmployeeEvent.HideDeleteDialog -> {
-                _state.update { it.copy(
-                    isDeletingEmployee = false
-                ) }
+                _state.update { it.copy(isDeletingEmployee = false) }
             }
 
+            // Add Employee
+            EmployeeEvent.HideDialog -> {
+                _state.update { it.copy(isAddingEmployee = false) }
+            }
             EmployeeEvent.SaveEmployee -> {
                 val empName = state.value.empName
                 val email = state.value.email
                 val password = state.value.password
                 val salary = state.value.salary
-                val id = state.value.count+1
-                val employeeId = "E${id.toString().padStart(3,'0')}"
+                val id = state.value.count + 1
+                val employeeId = "E${id.toString().padStart(3, '0')}"
 
-                if(empName.isBlank() || email.isBlank() || password.isBlank()) {
+                if (empName.isBlank() || email.isBlank() || password.isBlank()) {
                     return
                 }
 
@@ -79,63 +87,52 @@ class EmployeeViewModel(
                 viewModelScope.launch {
                     dao.upsertEmployee(employee)
                 }
-                _state.update { it.copy(
-                    isAddingEmployee = false,
-                    empName = "",
-                    email = "",
-                    password = "",
-                    salary = 2500.00,
-                    count = state.value.count + 1
-                ) }
+                _state.update {
+                    it.copy(
+                        isAddingEmployee = false,
+                        empName = "",
+                        email = "",
+                        password = "",
+                        salary = 2500.00,
+                        count = state.value.count + 1
+                    )
+                }
             }
 
+            // Setters
             is EmployeeEvent.SetEmail -> {
-                _state.update { it.copy(
-                    email = event.email
-                ) }
+                _state.update { it.copy(email = event.email) }
             }
             is EmployeeEvent.SetName -> {
-                _state.update { it.copy(
-                    empName = event.empName
-                ) }
+                _state.update { it.copy(empName = event.empName) }
             }
             is EmployeeEvent.SetPassword -> {
-                _state.update { it.copy(
-                    password = event.password
-                ) }
+                _state.update { it.copy(password = event.password) }
             }
             is EmployeeEvent.SetSalary -> {
-                _state.update { it.copy(
-                    salary = event.salary
-                ) }
+                _state.update { it.copy(salary = event.salary) }
             }
+
+            // Dialog visibility
             EmployeeEvent.ShowDialog -> {
-                _state.update { it.copy(
-                    isAddingEmployee = true
-                ) }
+                _state.update { it.copy(isAddingEmployee = true) }
             }
-
             EmployeeEvent.ShowDeleteDialog -> {
-                _state.update { it.copy(
-                    isDeletingEmployee = true
-                ) }
+                _state.update { it.copy(isDeletingEmployee = true) }
             }
-
-            is EmployeeEvent.SortEmployee ->{
+            is EmployeeEvent.SortEmployee -> {
                 _sortType.value = event.sortType
             }
-
             is EmployeeEvent.ShowDetailDialog -> {
-                _state.update { it.copy(
-                    isShowingDetail = true,
-                    selectedEmployee = event.employee
-                ) }
+                _state.update {
+                    it.copy(
+                        isShowingDetail = true,
+                        selectedEmployee = event.employee
+                    )
+                }
             }
-
-            is EmployeeEvent.HideDetailDialog -> {
-                _state.update { it.copy(
-                    isShowingDetail = false,
-                ) }
+            EmployeeEvent.HideDetailDialog -> {
+                _state.update { it.copy(isShowingDetail = false) }
             }
         }
     }
