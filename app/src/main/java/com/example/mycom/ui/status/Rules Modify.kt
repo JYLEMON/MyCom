@@ -117,6 +117,7 @@ fun EditTime(
                     if (state.isSettingStartTime) {
                         onEvent(TimePickerEvent.SetStartHour(timePickerState.hour))
                         onEvent(TimePickerEvent.SetStartMinute(timePickerState.minute))
+
                         when {
                             state.startHour == 0 -> {
                                 onEvent(TimePickerEvent.SetStartHour(12))
