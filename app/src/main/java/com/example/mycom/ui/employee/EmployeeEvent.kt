@@ -3,14 +3,24 @@ package com.example.mycom.ui.employee
 import com.example.mycom.data.Employee
 
 sealed interface EmployeeEvent {
+    //Save Data
     object SaveEmployee: EmployeeEvent
+
+    //Update
+    data class UpdateEmployee(
+        val empName: String,
+        val email: String,
+        val password: String,
+        val salary: String
+    ) : EmployeeEvent
+
     //Name
     data class SetName(val empName: String): EmployeeEvent
     data class SetEmail(val email: String): EmployeeEvent
     data class SetPassword(val password: String): EmployeeEvent
     data class SetSalary(val salary: Double): EmployeeEvent
 
-    //Dialog
+    //Add Dialog
     object  ShowDialog: EmployeeEvent
     object HideDialog: EmployeeEvent
 
