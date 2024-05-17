@@ -8,6 +8,7 @@ data class EmployeeState (
     val email: String = "",
     val password: String = "",
     val salary: Double = 2500.00,
+    val count: Int = 0,
     val deleteEmployee: Employee? = null,
     val isAddingEmployee: Boolean = false,
     val isShowingDetail: Boolean = false,

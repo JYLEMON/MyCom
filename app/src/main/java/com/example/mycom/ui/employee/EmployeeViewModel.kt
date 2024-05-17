@@ -51,8 +51,6 @@ class EmployeeViewModel(
 
             }
 
-
-
             EmployeeEvent.HideDeleteDialog -> {
                 _state.update { it.copy(
                     isDeletingEmployee = false
@@ -64,6 +62,8 @@ class EmployeeViewModel(
                 val email = state.value.email
                 val password = state.value.password
                 val salary = state.value.salary
+                val id = state.value.count+1
+                val employeeId = "E${id.toString().padStart(3,'0')}"
 
                 if(empName.isBlank() || email.isBlank() || password.isBlank()) {
                     return
@@ -73,7 +73,8 @@ class EmployeeViewModel(
                     empName = empName,
                     email = email,
                     password = password,
-                    salary = salary.toString()
+                    salary = salary.toString(),
+                    empId = employeeId
                 )
                 viewModelScope.launch {
                     dao.upsertEmployee(employee)
@@ -84,6 +85,7 @@ class EmployeeViewModel(
                     email = "",
                     password = "",
                     salary = 2500.00,
+                    count = state.value.count + 1
                 ) }
             }
 
