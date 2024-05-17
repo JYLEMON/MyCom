@@ -29,7 +29,7 @@ fun ShowEditDialog(
     var editedEmployeeName by remember { mutableStateOf(state.selectedEmployee?.empName ?: "") }
     var editedEmployeeEmail by remember { mutableStateOf(state.selectedEmployee?.email ?: "") }
     var editedEmployeePassword by remember { mutableStateOf(state.selectedEmployee?.password ?: "") }
-    var editedEmployeeSalary by remember { mutableStateOf(state.selectedEmployee?.salary ?: "0.0") } // Initialize as String
+    var editedEmployeeSalary by remember { mutableStateOf(state.selectedEmployee?.salary ?: "0.0") }
 
     Box(
         modifier = Modifier
@@ -37,7 +37,6 @@ fun ShowEditDialog(
             .background(Color.Black.copy(alpha = 0.5f))
             .clickable(onClick = {
                 onEvent(EmployeeEvent.HideEditDialog)
-
             }),
         contentAlignment = Alignment.Center
     ) {
@@ -45,7 +44,6 @@ fun ShowEditDialog(
             modifier = modifier,
             onDismissRequest = {
                 onEvent(EmployeeEvent.HideEditDialog)
-                onEvent(EmployeeEvent.HideDetailDialog)
             },
             title = { Text(text = "Edit Employee Details") },
             text = {
@@ -74,26 +72,22 @@ fun ShowEditDialog(
                         },
                         label = { Text("Salary") }
                     )
-
                 }
             },
             confirmButton = {
                 Button(
                     onClick = {
-                        // Trigger the edit event with updated employee details
-                        onEvent(
-                            EmployeeEvent.ShowEditDialog(
-                                Employee(
-                                    empId = state.selectedEmployee?.empId ?: "",
+                        if (state.selectedEmployee != null) {
+                            onEvent(
+                                EmployeeEvent.UpdateEmployee(
                                     empName = editedEmployeeName,
                                     email = editedEmployeeEmail,
                                     password = editedEmployeePassword,
                                     salary = editedEmployeeSalary
                                 )
                             )
-                        )
+                        }
                         onEvent(EmployeeEvent.HideEditDialog)
-                        onEvent(EmployeeEvent.HideDetailDialog)
                     }
                 ) {
                     Text(text = "Save")
