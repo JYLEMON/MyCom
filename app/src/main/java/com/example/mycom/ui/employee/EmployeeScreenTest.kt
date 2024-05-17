@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import com.example.mycom.data.Employee
 
 @Composable
@@ -66,7 +67,14 @@ fun EmployeeScreenTest(
         }
     ) { padding ->
         if (state.isAddingEmployee) {
-            AddEmployeeDialog(state = state, onEvent = onEvent)
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .zIndex(1f)
+                    .background(Color.Black.copy(alpha = 0.5f))
+            ) {
+                AddEmployeeDialog(state = state, onEvent = onEvent, modifier = Modifier.zIndex(2f))
+            }
         }
 
         LazyColumn(
