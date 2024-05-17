@@ -1,6 +1,6 @@
 package com.example.mycom.ui.employee
 
 enum class SortType{
-    EMP_NAME,
+    EMP_ID,
 
 }

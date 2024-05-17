@@ -21,6 +21,6 @@ interface EmployeeDao {
     suspend fun deleteEmployee(employee: Employee)
 
     //
-    @Query("SELECT * FROM Employee ORDER BY empName ASC")
-    fun getEmployeeOrderedByName(): Flow<List<Employee>>
+    @Query("SELECT * FROM Employee ORDER BY empId")
+    fun getEmployeeOrderedById(): Flow<List<Employee>>
 }
