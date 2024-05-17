@@ -25,77 +25,68 @@ fun AddEmployeeDialog (
     onEvent: (EmployeeEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black.copy(alpha = 0.5f)) // Semi-transparent black color
-            .clickable {  onEvent(EmployeeEvent.HideDialog) }, // Dismiss the dialog on background click
-        contentAlignment = Alignment.Center
-    ) {
-        AlertDialog(
-            modifier = Modifier,
-            onDismissRequest = {
-                onEvent(EmployeeEvent.HideDialog)
-            },
-            title = { Text(text = "Add Employee") },
-            text = {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    TextField(
-                        value = state.empName,
-                        onValueChange = {
-                            onEvent(EmployeeEvent.SetName(it))
-                        },
-                        placeholder = {
-                            Text(text = "Name")
-                        }
-                    )
-
-                    TextField(
-                        value = state.email,
-                        onValueChange = {
-                            onEvent(EmployeeEvent.SetEmail(it))
-                        },
-                        placeholder = {
-                            Text(text = "Email")
-                        }
-                    )
-
-                    TextField(
-                        value = state.password,
-                        onValueChange = {
-                            onEvent(EmployeeEvent.SetPassword(it))
-                        },
-                        placeholder = {
-                            Text(text = "Password")
-                        }
-                    )
-
-                    TextField(
-                        value = state.salary.toString(),
-                        onValueChange = { newValue ->
-                            val parsedValue = newValue.toDoubleOrNull() ?: state.salary
-                            onEvent(EmployeeEvent.SetSalary(parsedValue))
-                        },
-                        placeholder = {
-                            Text(text = "Salary")
-                        },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        visualTransformation = VisualTransformation.None
-                    )
-                }
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        onEvent(EmployeeEvent.SaveEmployee)
+    AlertDialog(
+        modifier = Modifier,
+        onDismissRequest = {
+            onEvent(EmployeeEvent.HideDialog)
+        },
+        title = { Text(text = "Add Employee") },
+        text = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                TextField(
+                    value = state.empName,
+                    onValueChange = {
+                        onEvent(EmployeeEvent.SetName(it))
+                    },
+                    placeholder = {
+                        Text(text = "Name")
                     }
-                ) {
-                    Text(text = "Save")
-                }
-            }
-        )
-    }
+                )
 
+                TextField(
+                    value = state.email,
+                    onValueChange = {
+                        onEvent(EmployeeEvent.SetEmail(it))
+                    },
+                    placeholder = {
+                        Text(text = "Email")
+                    }
+                )
+
+                TextField(
+                    value = state.password,
+                    onValueChange = {
+                        onEvent(EmployeeEvent.SetPassword(it))
+                    },
+                    placeholder = {
+                        Text(text = "Password")
+                    }
+                )
+
+                TextField(
+                    value = state.salary.toString(),
+                    onValueChange = { newValue ->
+                        val parsedValue = newValue.toDoubleOrNull() ?: state.salary
+                        onEvent(EmployeeEvent.SetSalary(parsedValue))
+                    },
+                    placeholder = {
+                        Text(text = "Salary")
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    visualTransformation = VisualTransformation.None
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onEvent(EmployeeEvent.SaveEmployee)
+                }
+            ) {
+                Text(text = "Save")
+            }
+        }
+    )
 }
