@@ -59,6 +59,8 @@ fun ShowRulesScreen(
         mutableStateOf("$endHourString:$endMinuteString${state.timeNow.last().endAmPm}")
     }*/
 
+    val timePickerState = rememberTimePickerState()
+
     var startTime = "1:00am"
     var endTime = "10:00pm"
 
@@ -92,29 +94,12 @@ fun ShowRulesScreen(
     }
 
     if (state.isSettingStartTime) {
-        EditTime(state = state, onEvent = onEvent)
-    }
-    if(state.isSettingEndTime) {
-        EditTime(state = state, onEvent = onEvent)
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun EditTime(
-    state: TimeRangeState,
-    onEvent: (TimePickerEvent) -> Unit
-) {
-    val timePickerState = rememberTimePickerState()
-    TimePickerDialog(
-        onDismissRequest = {
-            if (state.isSettingStartTime){onEvent(TimePickerEvent.HideStartTimeDialog)}
-            if (state.isSettingEndTime){onEvent(TimePickerEvent.HideEndTimeDialog)}
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    if (state.isSettingStartTime) {
+        TimePickerDialog(
+            onDismissRequest = {
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
                         onEvent(TimePickerEvent.SetStartHour(timePickerState.hour))
                         onEvent(TimePickerEvent.SetStartMinute(timePickerState.minute))
 
@@ -122,7 +107,7 @@ fun EditTime(
                             state.startHour == 0 -> {
                                 onEvent(TimePickerEvent.SetStartHour(12))
                                 onEvent(TimePickerEvent.SetStartAmPm("AM"))
-                        }
+                            }
                             state.startHour == 12 -> onEvent(TimePickerEvent.SetStartAmPm("PM"))
                             state.startHour > 12 -> {
                                 onEvent(TimePickerEvent.SetStartHour(state.startHour - 12))
@@ -132,9 +117,31 @@ fun EditTime(
                         }
                         onEvent(TimePickerEvent.SaveStartTime)
                         onEvent(TimePickerEvent.HideStartTimeDialog)
+                    }) {
+                    Text("OK")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        onEvent(TimePickerEvent.HideStartTimeDialog)
                     }
-
-                    if (state.isSettingEndTime) {
+                ) { Text("Cancel") }
+            }
+        )
+        {
+            TimePicker(
+                state = timePickerState
+            )
+        }
+    }
+    if(state.isSettingEndTime) {
+        TimePickerDialog(
+            onDismissRequest = {
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
                         onEvent(TimePickerEvent.SetEndHour(timePickerState.hour))
                         onEvent(TimePickerEvent.SetEndMinute(timePickerState.minute))
                         when {
@@ -149,25 +156,26 @@ fun EditTime(
                             }
                             else -> onEvent(TimePickerEvent.SetEndAmPm("AM"))
                         }
+                        onEvent(TimePickerEvent.SaveEndTime)
+                        onEvent(TimePickerEvent.HideEndTimeDialog)
+
+                    }) {
+                    Text("OK")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
                         onEvent(TimePickerEvent.HideEndTimeDialog)
                     }
-                }) {
-                Text("OK")
+                ) { Text("Cancel") }
             }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = {
-                    if (state.isSettingStartTime){onEvent(TimePickerEvent.HideStartTimeDialog)}
-                    if (state.isSettingEndTime){onEvent(TimePickerEvent.HideEndTimeDialog)}
-                }
-            ) { Text("Cancel") }
-        }
-    )
-    {
-        TimePicker(
-            state = timePickerState
         )
+        {
+            TimePicker(
+                state = timePickerState
+            )
+        }
     }
 }
 

@@ -37,20 +37,9 @@ class TimeRangeViewModel(
 
     fun onEvent(event: TimePickerEvent) {
         when(event) {
-            TimePickerEvent.ShowStartTimeDialog -> {
-                _state.update { it.copy(
-                    isSettingStartTime = true
-                ) }
-            }
             TimePickerEvent.HideStartTimeDialog -> {
                 _state.update { it.copy(
                     isSettingStartTime = false
-                ) }
-            }
-
-            TimePickerEvent.ShowEndTimeDialog -> {
-                _state.update { it.copy(
-                    isSettingEndTime = true
                 ) }
             }
             TimePickerEvent.HideEndTimeDialog -> {
@@ -85,12 +74,6 @@ class TimeRangeViewModel(
                     dao.upsertTimeRange(timeRange)
                     //dao.deleteTimeRange(currentTimeRange)
                 }
-
-                _state.update { it.copy(
-                    startHour = 0,
-                    startMinute = 0,
-                    startAmPm = ""
-                ) }
             }
 
             TimePickerEvent.SaveEndTime -> {
@@ -119,12 +102,6 @@ class TimeRangeViewModel(
                     dao.upsertTimeRange(timeRange)
                     //dao.deleteTimeRange(currentTimeRange)
                 }
-
-                _state.update { it.copy(
-                    endHour = 0,
-                    endMinute = 0,
-                    endAmPm = ""
-                ) }
             }
 
             is TimePickerEvent.SetStartHour -> {
@@ -155,6 +132,16 @@ class TimeRangeViewModel(
             is TimePickerEvent.SetEndAmPm -> {
                 _state.update { it.copy(
                     endAmPm = event.endAmPm
+                ) }
+            }
+            TimePickerEvent.ShowStartTimeDialog -> {
+                _state.update { it.copy(
+                    isSettingStartTime = true
+                ) }
+            }
+            TimePickerEvent.ShowEndTimeDialog -> {
+                _state.update { it.copy(
+                    isSettingEndTime = true
                 ) }
             }
         }
