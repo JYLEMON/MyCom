@@ -40,7 +40,7 @@ fun ShowRulesScreen(
     state: TimeRangeState,
     onEvent: (TimePickerEvent) -> Unit
 ) {
-    /*var startHourString by remember {
+    var startHourString by remember {
         mutableStateOf(state.timeNow.last().startHour.toString().padStart(2,'0'))
     }
     var endHourString by remember {
@@ -57,14 +57,14 @@ fun ShowRulesScreen(
     }
     var endTime by remember {
         mutableStateOf("$endHourString:$endMinuteString${state.timeNow.last().endAmPm}")
-    }*/
+    }
 
     val timePickerState = rememberTimePickerState()
 
-    var startTime = "1:00am"
-    var endTime = "10:00pm"
-
     var progress by remember { mutableStateOf(0) }
+    var showStartTimePicker by remember { mutableStateOf(false) }
+    var showEndTimePicker by remember { mutableStateOf(false) }
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -78,7 +78,7 @@ fun ShowRulesScreen(
         }
         Row {
             Button(onClick = {
-                onEvent(TimePickerEvent.ShowStartTimeDialog)
+                showStartTimePicker =true
             }
             ) {
                 Text("Set Start Time")
@@ -86,37 +86,47 @@ fun ShowRulesScreen(
         }
         Row {
             Button(onClick = {
-                onEvent(TimePickerEvent.ShowEndTimeDialog)
+                showEndTimePicker =true
             }) {
                 Text("Set End Time")
             }
         }
     }
 
-    if (state.isSettingStartTime) {
+    if (showStartTimePicker) {
         TimePickerDialog(
             onDismissRequest = {
             },
             confirmButton = {
                 TextButton(
                     onClick = {
-                        onEvent(TimePickerEvent.SetStartHour(timePickerState.hour))
-                        onEvent(TimePickerEvent.SetStartMinute(timePickerState.minute))
-
+                        var hour = timePickerState.hour
+                        val minute = timePickerState.minute
+                        var am_pm = ""
+                        onEvent(TimePickerEvent.SetStartMinute(minute))
                         when {
-                            state.startHour == 0 -> {
-                                onEvent(TimePickerEvent.SetStartHour(12))
-                                onEvent(TimePickerEvent.SetStartAmPm("AM"))
+                            hour == 0 -> {
+                                hour = 12
+                                am_pm = "AM"
                             }
-                            state.startHour == 12 -> onEvent(TimePickerEvent.SetStartAmPm("PM"))
-                            state.startHour > 12 -> {
-                                onEvent(TimePickerEvent.SetStartHour(state.startHour - 12))
-                                onEvent(TimePickerEvent.SetStartAmPm("PM"))
+                            hour == 12 -> {
+                                am_pm = "PM"
                             }
-                            else -> onEvent(TimePickerEvent.SetStartAmPm("AM"))
+                            hour > 12 -> {
+                                hour -= 12
+                                am_pm = "PM"
+                            }
+                            else -> {
+                                am_pm = "AM"
+                            }
                         }
+                        onEvent(TimePickerEvent.SetStartHour(hour))
+                        onEvent(TimePickerEvent.SetStartAmPm(am_pm))
+                        startHourString = hour.toString().padStart(2,'0')
+                        startMinuteString = minute.toString().padStart(2,'0')
+                        startTime = "$startHourString:$startMinuteString$am_pm"
                         onEvent(TimePickerEvent.SaveStartTime)
-                        onEvent(TimePickerEvent.HideStartTimeDialog)
+                        showStartTimePicker =false
                     }) {
                     Text("OK")
                 }
@@ -124,7 +134,7 @@ fun ShowRulesScreen(
             dismissButton = {
                 TextButton(
                     onClick = {
-                        onEvent(TimePickerEvent.HideStartTimeDialog)
+                        showEndTimePicker = false
                     }
                 ) { Text("Cancel") }
             }
@@ -135,30 +145,40 @@ fun ShowRulesScreen(
             )
         }
     }
-    if(state.isSettingEndTime) {
+    if(showEndTimePicker) {
         TimePickerDialog(
             onDismissRequest = {
             },
             confirmButton = {
                 TextButton(
                     onClick = {
-                        onEvent(TimePickerEvent.SetEndHour(timePickerState.hour))
-                        onEvent(TimePickerEvent.SetEndMinute(timePickerState.minute))
+                        var hour = timePickerState.hour
+                        val minute = timePickerState.minute
+                        var am_pm = ""
+                        onEvent(TimePickerEvent.SetEndMinute(minute))
                         when {
-                            state.startHour == 0 -> {
-                                onEvent(TimePickerEvent.SetEndHour(12))
-                                onEvent(TimePickerEvent.SetEndAmPm("AM"))
+                            hour == 0 -> {
+                                hour = 12
+                                am_pm = "AM"
                             }
-                            state.startHour == 12 -> onEvent(TimePickerEvent.SetEndAmPm("PM"))
-                            state.startHour > 12 -> {
-                                onEvent(TimePickerEvent.SetEndHour(state.endHour - 12))
-                                onEvent(TimePickerEvent.SetEndAmPm("PM"))
+                            hour == 12 -> {
+                                am_pm = "PM"
                             }
-                            else -> onEvent(TimePickerEvent.SetEndAmPm("AM"))
+                            hour > 12 -> {
+                                hour -= 12
+                                am_pm = "PM"
+                            }
+                            else -> {
+                                am_pm = "AM"
+                            }
                         }
+                        onEvent(TimePickerEvent.SetEndHour(hour))
+                        onEvent(TimePickerEvent.SetEndAmPm(am_pm))
+                        endHourString = hour.toString().padStart(2,'0')
+                        endMinuteString = minute.toString().padStart(2,'0')
+                        endTime = "$endHourString:$endMinuteString$am_pm"
                         onEvent(TimePickerEvent.SaveEndTime)
-                        onEvent(TimePickerEvent.HideEndTimeDialog)
-
+                        showEndTimePicker = false
                     }) {
                     Text("OK")
                 }
@@ -166,7 +186,7 @@ fun ShowRulesScreen(
             dismissButton = {
                 TextButton(
                     onClick = {
-                        onEvent(TimePickerEvent.HideEndTimeDialog)
+                        showEndTimePicker = false
                     }
                 ) { Text("Cancel") }
             }

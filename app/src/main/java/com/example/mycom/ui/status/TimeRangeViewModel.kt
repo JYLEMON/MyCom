@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.managementsystem.ManagementModule.WorkEvent
 import com.example.mycom.timeRangeData.TimeRange
+import com.example.mycom.ui.ManagementModule.WorkSortType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -17,21 +18,19 @@ import kotlinx.coroutines.launch
 class TimeRangeViewModel(
     private val dao: TimePickerDao
 ):ViewModel() {
-    private val _timeNow = emptyFlow<List<TimeRange>>()
-        .flatMapLatest {
-            dao.getTimeRange()
+    private val _sortType = MutableStateFlow(TimeRangeSortType.VERSION)
+    private val _timeNow = _sortType
+        .flatMapLatest {sortType ->
+            when(sortType) {
+                TimeRangeSortType.VERSION -> dao.getTimeRange()
+            }
         }
 
     private val _state = MutableStateFlow(TimeRangeState())
-    val state = combine(_state, _timeNow) { state, timeNow ->
+    val state = combine(_state, _sortType, _timeNow) { state, sortType, timeNow ->
         state.copy(
             timeNow = timeNow,
-            startHour = 1,
-            startMinute = 0,
-            startAmPm = "am",
-            endHour = 6,
-            endMinute = 0,
-            endAmPm = "pm"
+            sortType = sortType
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TimeRangeState())
 
@@ -47,15 +46,25 @@ class TimeRangeViewModel(
                   isSettingEndTime = false
                 ) }
             }
+            TimePickerEvent.ShowStartTimeDialog -> {
+                _state.update { it.copy(
+                    isSettingStartTime = true
+                ) }
+            }
+            TimePickerEvent.ShowEndTimeDialog -> {
+                _state.update { it.copy(
+                    isSettingEndTime = true
+                ) }
+            }
 
             TimePickerEvent.SaveStartTime -> {
-                //val currentTimeRange = state.value.timeNow.last()
+                val currentTimeRange = state.value.timeNow.last()
                 val startHour = state.value.startHour
                 val startMinute = state.value.startMinute
-                val endHour = state.value.endHour
-                val endMinute = state.value.endMinute
+                val endHour = currentTimeRange.endHour
+                val endMinute = currentTimeRange.endMinute
                 val startAmPm = state.value.startAmPm
-                val endAmPm = state.value.endAmPm
+                val endAmPm = currentTimeRange.endAmPm
 
                 if(startHour == 0) {
                     return
@@ -72,17 +81,17 @@ class TimeRangeViewModel(
 
                 viewModelScope.launch {
                     dao.upsertTimeRange(timeRange)
-                    //dao.deleteTimeRange(currentTimeRange)
+                    dao.deleteTimeRange(currentTimeRange)
                 }
             }
 
             TimePickerEvent.SaveEndTime -> {
-                //val currentTimeRange = state.value.timeNow.last()
-                val startHour = state.value.startHour
-                val startMinute = state.value.startMinute
+                val currentTimeRange = state.value.timeNow.last()
+                val startHour = currentTimeRange.startHour
+                val startMinute = currentTimeRange.startMinute
                 val endHour = state.value.endHour
                 val endMinute = state.value.endMinute
-                val startAmPm = state.value.startAmPm
+                val startAmPm = currentTimeRange.startAmPm
                 val endAmPm = state.value.endAmPm
 
                 if (endHour == 0) {
@@ -100,7 +109,7 @@ class TimeRangeViewModel(
 
                 viewModelScope.launch {
                     dao.upsertTimeRange(timeRange)
-                    //dao.deleteTimeRange(currentTimeRange)
+                    dao.deleteTimeRange(currentTimeRange)
                 }
             }
 
@@ -132,16 +141,6 @@ class TimeRangeViewModel(
             is TimePickerEvent.SetEndAmPm -> {
                 _state.update { it.copy(
                     endAmPm = event.endAmPm
-                ) }
-            }
-            TimePickerEvent.ShowStartTimeDialog -> {
-                _state.update { it.copy(
-                    isSettingStartTime = true
-                ) }
-            }
-            TimePickerEvent.ShowEndTimeDialog -> {
-                _state.update { it.copy(
-                    isSettingEndTime = true
                 ) }
             }
         }

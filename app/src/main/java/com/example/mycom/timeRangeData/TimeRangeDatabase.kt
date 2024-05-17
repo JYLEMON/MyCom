@@ -9,5 +9,6 @@ import com.example.mycom.ui.status.TimePickerDao
     version = 1
 )
 abstract class TimeRangeDatabase: RoomDatabase() {
+
     abstract val dao: TimePickerDao
 }
