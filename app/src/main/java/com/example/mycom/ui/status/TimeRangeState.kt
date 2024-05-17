@@ -11,5 +11,6 @@ data class TimeRangeState(
     val startAmPm: String = "",
     val endAmPm: String = "",
     val isSettingStartTime: Boolean = false,
-    val isSettingEndTime: Boolean = false
+    val isSettingEndTime: Boolean = false,
+    val sortType: TimeRangeSortType = TimeRangeSortType.VERSION
 )
