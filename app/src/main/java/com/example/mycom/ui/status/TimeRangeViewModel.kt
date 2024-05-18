@@ -79,7 +79,6 @@ class TimeRangeViewModel(
                 }
             }
 
-
             TimePickerEvent.SaveStartTime -> {
                 val currentTimeRange = state.value.timeNow.last()
                 val startHour = state.value.startHour
