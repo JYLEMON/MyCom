@@ -47,7 +47,7 @@ fun RegisterScreen(
     Box(modifier = Modifier
         .fillMaxSize()
     ) {
-        Column (
+        Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(32.dp),
             modifier = Modifier.fillMaxSize()
@@ -62,9 +62,16 @@ fun RegisterScreen(
             )
             Divider(Modifier.padding(horizontal = 16.dp))
 
-            Text(text = "ID")
+            Text(
+                text = "ID: E${(state.count + 1).toString().padStart(3, '0')}", // Display the ID
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
 
-            Column (
+            Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(32.dp),
             ) {
