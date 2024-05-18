@@ -20,6 +20,6 @@ interface WorkDao {
     @Update
     suspend fun updateWork(work: Work)
 
-    @Query("SELECT * FROM Work ORDER BY workTitle ASC")
-    fun getWorkListOrderByTitle(): Flow<List<Work>>
+    @Query("SELECT * FROM Work ORDER BY workID ASC")
+    fun getWorkListOrderById(): Flow<List<Work>>
 }

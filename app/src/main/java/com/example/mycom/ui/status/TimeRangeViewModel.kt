@@ -57,6 +57,28 @@ class TimeRangeViewModel(
                 ) }
             }
 
+            TimePickerEvent.SaveDefaultTime -> {
+                val startHour = 1
+                val startMinute = 0
+                val endHour = 6
+                val endMinute = 0
+                val startAmPm = "AM"
+                val endAmPm = "PM"
+
+                val timeRange = TimeRange(
+                    startHour = startHour,
+                    startMinute = startMinute,
+                    endHour = endHour,
+                    endMinute = endMinute,
+                    startAmPm = startAmPm,
+                    endAmPm = endAmPm
+                )
+
+                viewModelScope.launch {
+                    dao.upsertTimeRange(timeRange)
+                }
+            }
+
             TimePickerEvent.SaveStartTime -> {
                 val currentTimeRange = state.value.timeNow.last()
                 val startHour = state.value.startHour

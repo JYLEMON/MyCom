@@ -1,8 +1,11 @@
 package com.example.mycom.ui.status
 
+import com.example.mycom.timeRangeData.TimeRange
+
 interface TimePickerEvent {
     object SaveStartTime: TimePickerEvent
     object SaveEndTime: TimePickerEvent
+    object SaveDefaultTime: TimePickerEvent
     data class SetStartHour(val startHour: Int): TimePickerEvent
     data class SetStartMinute(val startMinute: Int): TimePickerEvent
     data class SetEndHour(val endHour: Int): TimePickerEvent
