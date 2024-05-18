@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.example.managementsystem.Data.WorkDatabase
+import com.example.managementsystem.ManagementModule.ManagementApp
 import com.example.mycom.ui.ManagementModule.ManageWork.WorkViewModel
 import com.example.myapplication.Database.ApprovalDatabase
 import com.example.myapplication.DatabaseApproval.ApprovalViewModel
@@ -124,7 +125,13 @@ class MainActivity : ComponentActivity() {
                 val Attesyaye by attendanceviewModel.state.collectAsState()
                 //StaffApprovalScreen(state = apprstate, onEvent = approvalviewModel::onEvent)
                 app(state = state, onEvent = viewModel::onEvent)
-               // RegisterScreen(state = state, onEvent = viewModel::onEvent)
+                // RegisterScreen(state = state, onEvent = viewModel::onEvent)
+                ManagementApp(
+                    state = workState,
+                    onEvent = workViewModel::onEvent,
+                    timeRangeState = timeRangeState,
+                    onTimeEvent = timeRangeViewModel::onEvent
+                )
             }
         }
     }
