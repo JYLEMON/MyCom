@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.managementsystem.Data.Work
+import com.example.mycom.ui.ManagementModule.ManageWork.WorkState
 
 @Composable
 fun DisplayWorkListScreen(

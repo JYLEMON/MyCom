@@ -1,6 +1,4 @@
-package com.example.mycom.ui.status
-
-import com.example.mycom.timeRangeData.TimeRange
+package com.example.mycom.ui.ManagementModule.RuleModify
 
 interface TimePickerEvent {
     object SaveStartTime: TimePickerEvent

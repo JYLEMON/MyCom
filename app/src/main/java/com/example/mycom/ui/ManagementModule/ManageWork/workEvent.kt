@@ -1,7 +1,7 @@
 package com.example.managementsystem.ManagementModule
 
 import com.example.managementsystem.Data.Work
-import com.example.mycom.ui.ManagementModule.WorkSortType
+import com.example.mycom.ui.ManagementModule.ManageWork.WorkSortType
 
 sealed interface WorkEvent {
     object SaveWork:WorkEvent
