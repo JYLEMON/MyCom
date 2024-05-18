@@ -1,7 +1,7 @@
-package com.example.managementsystem.ManagementModule
+package com.example.mycom.ui.ManagementModule.ManageWork
 
 import com.example.managementsystem.Data.Work
-import com.example.mycom.ui.ManagementModule.WorkSortType
+import com.example.mycom.ui.ManagementModule.ManageWork.WorkSortType
 
 data class WorkState(
     val workList: List<Work> = emptyList(),

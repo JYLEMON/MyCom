@@ -1,17 +1,13 @@
-package com.example.mycom.ui.status
+package com.example.mycom.ui.ManagementModule.RuleModify
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.managementsystem.ManagementModule.WorkEvent
 import com.example.mycom.timeRangeData.TimeRange
-import com.example.mycom.ui.ManagementModule.WorkSortType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 

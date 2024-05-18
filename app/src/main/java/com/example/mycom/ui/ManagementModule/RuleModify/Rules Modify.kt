@@ -18,7 +18,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
-import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,8 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.example.mycom.ui.status.TimePickerEvent
-import com.example.mycom.ui.status.TimeRangeState
+import com.example.mycom.ui.ManagementModule.RuleModify.TimePickerEvent
+import com.example.mycom.ui.ManagementModule.RuleModify.TimeRangeState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

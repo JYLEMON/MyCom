@@ -1,13 +1,11 @@
-package com.example.managementsystem.ManagementModule
+package com.example.mycom.ui.ManagementModule.ManageWork
 
 import PreferencesManager
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.managementsystem.Data.Work
-import com.example.mycom.ui.ManagementModule.WorkSortType
-import com.example.mycom.workData.WorkPreferencesManager
+import com.example.managementsystem.ManagementModule.WorkEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
