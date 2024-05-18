@@ -120,13 +120,12 @@ fun RegisterScreen(
                         onClickButton1()
                     } else {
                         coroutineScope.launch {
-                            snackbarHostState.showSnackbar("Passwords do not match")
+                            snackbarHostState.showSnackbar("Register Failed : Passwords do not match")
                         }
                         password = ""
                         confirmPassword = ""
                     }
                 },
-                colors = ButtonDefaults.buttonColors(Color(0xFFBB86FC)),
                 modifier = Modifier
                     .width(144.dp)
                     .padding(top = 32.dp)
