@@ -26,6 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.managementsystem.Data.Work
 import com.example.mycom.R
+import com.example.mycom.timeRangeData.TimeRange
 import com.example.mycom.ui.ManagementModule.ManageWork.WorkState
 import com.example.mycom.ui.ManagementModule.RuleModify.TimePickerEvent
 import com.example.mycom.ui.ManagementModule.RuleModify.TimeRangeState
@@ -89,16 +90,21 @@ fun ManagementApp(
         onEvent(WorkEvent.DeleteWork(work))
     }
 
-    //Insert Default Data
-    //onTimeEvent(TimePickerEvent.SaveDefaultTime)
+    var count = 0
 
     Scaffold(
         bottomBar = {
             NavigationBar(
                 currentScreen = currentScreen,
                 navigateUp = { navController.navigateUp() },
-                goSetRulesButtonClicked = {navController.navigate(ManagementScreen.ruleSet.name)},
-                goShowWorkButtonClicked = {navController.navigate(ManagementScreen.displayWork.name)}
+                goSetRulesButtonClicked = {
+                    //Insert Default Data
+                    navController.navigate(ManagementScreen.ruleSet.name)
+                },
+                goShowWorkButtonClicked = {
+                    onTimeEvent(TimePickerEvent.SaveDefaultTime)
+                    navController.navigate(ManagementScreen.displayWork.name)
+                }
             )
         }
     ) { innerPadding ->

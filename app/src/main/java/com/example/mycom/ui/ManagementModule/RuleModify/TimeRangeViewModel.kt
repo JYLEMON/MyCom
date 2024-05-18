@@ -1,12 +1,17 @@
 package com.example.mycom.ui.ManagementModule.RuleModify
 
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mycom.timeRangeData.TimeRange
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -29,6 +34,17 @@ class TimeRangeViewModel(
             sortType = sortType
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TimeRangeState())
+
+    val timeRangeList = listOf(
+        TimeRange(
+            startHour = 1,
+            startMinute = 0,
+            startAmPm = "AM",
+            endHour = 6,
+            endMinute = 0,
+            endAmPm = "PM"
+        ),
+    )
 
     fun onEvent(event: TimePickerEvent) {
         when(event) {
@@ -54,24 +70,27 @@ class TimeRangeViewModel(
             }
 
             TimePickerEvent.SaveDefaultTime -> {
-                val startHour = 1
-                val startMinute = 0
-                val endHour = 6
-                val endMinute = 0
-                val startAmPm = "AM"
-                val endAmPm = "PM"
-
-                val timeRange = TimeRange(
-                    startHour = startHour,
-                    startMinute = startMinute,
-                    endHour = endHour,
-                    endMinute = endMinute,
-                    startAmPm = startAmPm,
-                    endAmPm = endAmPm
+                _state.update {it.copy(
+                    startHour = 1,
+                    startMinute = 0,
+                    startAmPm = "AM",
+                    endHour = 6,
+                    endMinute = 0,
+                    endAmPm = "PM"
                 )
+                }
 
                 viewModelScope.launch {
-                    dao.upsertTimeRange(timeRange)
+                    dao.upsertTimeRange(
+                        timeRange = TimeRange(
+                            startHour = state.value.startHour,
+                            startMinute = state.value.startMinute,
+                            startAmPm = state.value.startAmPm,
+                            endHour = state.value.endHour,
+                            endMinute = state.value.endMinute,
+                            endAmPm = state.value.endAmPm
+                        )
+                    )
                 }
             }
 
