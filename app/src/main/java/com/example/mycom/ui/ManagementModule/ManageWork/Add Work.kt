@@ -14,7 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.managementsystem.Data.WorkListData
+import com.example.mycom.ui.ManagementModule.ManageWork.WorkState
 
 @Composable
 fun AddWorkScreen(

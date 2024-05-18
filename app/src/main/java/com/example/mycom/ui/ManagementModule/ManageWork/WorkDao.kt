@@ -1,4 +1,4 @@
-package com.example.managementsystem.ManagementModule
+package com.example.mycom.ui.ManagementModule.ManageWork
 
 import androidx.room.Dao
 import androidx.room.Delete

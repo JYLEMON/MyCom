@@ -2,7 +2,7 @@ package com.example.mycom.timeRangeData
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.mycom.ui.status.TimePickerDao
+import com.example.mycom.ui.ManagementModule.RuleModify.TimePickerDao
 
 @Database(
     entities = [TimeRange::class],

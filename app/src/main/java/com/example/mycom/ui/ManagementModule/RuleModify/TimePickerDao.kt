@@ -1,4 +1,4 @@
-package com.example.mycom.ui.status
+package com.example.mycom.ui.ManagementModule.RuleModify
 
 import androidx.room.Dao
 import androidx.room.Delete

@@ -1,6 +1,7 @@
-package com.example.mycom.ui.status
+package com.example.mycom.ui.ManagementModule.RuleModify
 
 import com.example.mycom.timeRangeData.TimeRange
+import com.example.mycom.ui.ManagementModule.RuleModify.TimeRangeSortType
 
 data class TimeRangeState(
     val timeNow: List<TimeRange> = emptyList(),
