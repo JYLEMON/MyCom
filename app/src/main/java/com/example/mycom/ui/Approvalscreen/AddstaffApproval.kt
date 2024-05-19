@@ -60,6 +60,7 @@ fun AddStaffApporval(
         Text(text = "Name:$name")
         Text(text = "ID:$id")
         onEvent(ApprovalEvent.SetStaffApprovalList(id))
+        onEvent(ApprovalEvent.Setname(name))
         // Toggle switches for Late and Leave
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 8.dp)) {
             Text(text = if (isLate) " Late " else "Leave", fontSize = 18.sp)

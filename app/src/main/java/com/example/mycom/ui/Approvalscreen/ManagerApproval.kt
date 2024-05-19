@@ -1,5 +1,7 @@
 package com.example.mycom.ui.Approvalscreen
 
+import DetailDialog
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,7 +33,7 @@ import com.example.myapplication.DatabaseApproval.ApprovalEvent
 import com.example.myapplication.DatabaseApproval.ApprovalState
 
 @Composable
-fun StaffApprovalScreen(
+fun ManagerApprovalScreen(
     state: ApprovalState,
     onClickButton1: () -> Unit = {},
     onEvent: (ApprovalEvent) -> Unit
@@ -47,34 +49,44 @@ fun StaffApprovalScreen(
             items(state.approval) { Approval ->
                 if (Approval.stateinfo == info) {
                     Row(
-                        modifier = Modifier.fillMaxWidth()
-
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                            .clickable { onEvent(ApprovalEvent.SelectApproval(Approval)) },
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(
                             modifier = Modifier.weight(1f)
-
 
                         ) {
                             Text(
                                 text = "${Approval.staffid}",
                                 fontSize = 20.sp
                             )
-                            Text(text = "${Approval.leaveandlate}", fontSize = 12.sp)
+                            Text(
+                                text = "${Approval.name}",
+                                fontSize = 20.sp
+                            )
+
+                            Text(
+                                text = "${Approval.leaveandlate}",
+                                fontSize = 12.sp)
                         }
                         IconButton(onClick = {
+                            onEvent(ApprovalEvent.ApproveApproval(Approval))
 
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Check,
-                                contentDescription = "Delete Employee"
+                                contentDescription = "Approve Request"
                             )
                         }
                         IconButton(onClick = {
-
+                            onEvent(ApprovalEvent.RejectApproval(Approval))
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = "Delete Employee"
+                                contentDescription = "Approve Request"
                             )
                         }
                     }
@@ -82,23 +94,9 @@ fun StaffApprovalScreen(
             }
         }
 
-        FloatingActionButton(
-            onClick = onClickButton1,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp)
-                .clip(CircleShape)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = "Add Employee"
-            )
-        }
-
-
-
     }
 }
+
 
 @Preview(
     showSystemUi = true,
@@ -106,6 +104,6 @@ fun StaffApprovalScreen(
 )
 @Composable
 fun StaffApprovalPreview() {
-    StaffApprovalScreen(state = ApprovalState()){}
+    ManagerApprovalScreen(state = ApprovalState()){}
 
 }
