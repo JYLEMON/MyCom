@@ -42,6 +42,7 @@ fun Homepage(
                 .padding(start = 25.dp, end = 25.dp, top = 30.dp, bottom = 30.dp)
                 .weight(1f)
         ) {
+            Spacer(modifier = Modifier.padding(16.dp))
             Text(text = "Liang You Xian", fontSize = 35.sp)
             Text(
                 text = "E001",
