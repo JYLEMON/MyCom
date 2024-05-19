@@ -25,7 +25,7 @@ fun AddApproval(
         onDismissRequest = {
             onEvent(ApprovalEvent.Hidelist)
         },
-        title = { Text(text = "Add Employee") },
+        title = { Text(text = "Add Approval") },
         text = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)

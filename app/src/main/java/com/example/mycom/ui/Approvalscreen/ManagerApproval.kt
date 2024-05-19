@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.theme.Approvalscreen
+package com.example.mycom.ui.Approvalscreen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +12,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -37,13 +39,13 @@ fun StaffApprovalScreen(
     Box(
         modifier = Modifier.fillMaxSize(),
     ) {
-        val staffid = "c"
+        val info = "Requesting"
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(state.approval) { Approval ->
-                if (Approval.staffid == staffid) {
+                if (Approval.stateinfo == info) {
                     Row(
                         modifier = Modifier.fillMaxWidth()
 
@@ -60,10 +62,18 @@ fun StaffApprovalScreen(
                             Text(text = "${Approval.leaveandlate}", fontSize = 12.sp)
                         }
                         IconButton(onClick = {
-                            onEvent(ApprovalEvent.DeleteApproval(Approval))
+
                         }) {
                             Icon(
-                                imageVector = Icons.Default.Delete,
+                                imageVector = Icons.Default.Check,
+                                contentDescription = "Delete Employee"
+                            )
+                        }
+                        IconButton(onClick = {
+
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
                                 contentDescription = "Delete Employee"
                             )
                         }
