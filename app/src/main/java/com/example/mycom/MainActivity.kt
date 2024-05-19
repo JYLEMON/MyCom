@@ -137,12 +137,12 @@ class MainActivity : ComponentActivity() {
                     OneTimeRunUtil.setHasRun(this)
                 }
 
-                ManagementApp(
+                /*ManagementApp(
                     state = workState,
                     onEvent = workViewModel::onEvent,
                     timeRangeState = timeRangeState,
                     onTimeEvent = timeRangeViewModel::onEvent
-                )
+                )*/
             }
         }
     }

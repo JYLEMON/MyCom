@@ -1,219 +1,169 @@
 package com.example.myapplication.ui.theme.otherScreen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.outlined.DateRange
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mycom.R
 import com.example.mycom.ui.theme.MyComTheme
+import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.util.Date
-import androidx.compose.foundation.layout.Column as Column
-import kotlinx.coroutines.delay as delay
+import java.util.*
 
 @Composable
-fun Homepage (onClickButton1 : () -> Unit ={},
-              onClickButton2 : () -> Unit ={},
-              modifier: Modifier = Modifier){
-    Box(modifier = Modifier
-        .background(Color.White)
-        .fillMaxSize()) {
-        Box(modifier = Modifier
-            .padding(start = 25.dp, end = 25.dp, top = 30.dp, bottom = 30.dp)
-            .fillMaxSize()) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                Text(text = "Home Page", fontSize = 20.sp)
-                Text(text = "Liang You Xian", fontSize = 35.sp)
-                Spacer(modifier = Modifier.height(300.dp))
-                    Column(verticalArrangement = Arrangement.Bottom, modifier = Modifier.fillMaxSize()) {
-                        Text(text = "Next Trip", fontSize = 20.sp)
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Box() {
-                            Column(modifier = Modifier.background(Color.LightGray)) {
-                                Row {
-                                    Text(text = "Punch In", fontSize = 20.sp)
-                                    Spacer(modifier = Modifier.width(160.dp))
-                                    Text(text = "Punch Out", fontSize = 20.sp)
-                                }
-                                Row() {
-                                    Text(
-                                        text = "[jm]",
-                                        fontSize = 35.sp,
-                                        textAlign = TextAlign.Start,
-                                        modifier = Modifier.fillMaxWidth(0.25f)
-                                    )
-                                    Image(
-                                        painter = painterResource(R.drawable.images),
-                                        contentDescription = "Logo",
-                                        modifier = Modifier
-                                            .height(46.dp)
-                                            .fillMaxSize(0.66f)
+fun Homepage(
+    onClickButton1: () -> Unit = {},
+    onClickButton2: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    var punchInTime by remember { mutableStateOf<LocalTime?>(null) }
 
-                                    )
-                                    Text(
-                                        text = "[jm]",
-                                        fontSize = 35.sp,
-                                        textAlign = TextAlign.End,
-                                        modifier = Modifier.fillMaxWidth()
-                                    )
-                                }
-                                Box() {
-                                    Row(
-                                        modifier = Modifier
-                                            .background(Color.DarkGray)
-                                            .fillMaxWidth()
-                                    ) {
-                                        Text(
-                                            text = "8:30 am",
-                                            fontSize = 18.sp,
-                                            textAlign = TextAlign.Start,
-                                            modifier = Modifier.fillMaxWidth(0.5f)
-                                        )
-                                        Text(
-                                            text = "6:30 am",
-                                            fontSize = 18.sp,
-                                            textAlign = TextAlign.End,
-                                            modifier = Modifier.fillMaxWidth()
-                                        )
-                                    }
-                                }
+    Column(
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(start = 25.dp, end = 25.dp, top = 30.dp, bottom = 30.dp)
+                .weight(1f)
+        ) {
+            Text(text = "Liang You Xian", fontSize = 35.sp)
+            Text(
+                text = "E001",
+                fontSize = 20.sp,
+                modifier = Modifier.padding(bottom = 32.dp)
+            )
 
-                            }
+            Divider(Modifier.padding(bottom = 32.dp))
 
+            // Date Display
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        RealDate()
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                }
+            }
 
-                        }
-                        Spacer(modifier = Modifier.height(20.dp))
-                        Row() {
-                            Button(
-                                onClick = onClickButton1,
-                                shape = RoundedCornerShape(16.dp),
-                                modifier = Modifier
-                                    .padding(start = 10.dp)
-                                    .height(120.dp)
-                                    .aspectRatio(1f)
-                            ) {
-                                Text(text = "Punch In/Punch Out")
-                            }
-                            Button(
-                                onClick = onClickButton2,
-                                shape = RoundedCornerShape(16.dp),
-                                modifier = Modifier
-                                    .padding(start = 90.dp)
-                                    .height(120.dp)
-                                    .aspectRatio(1f)
-                            ) {
-                                Image(
-                                    painter = painterResource(R.drawable.images),
-                                    contentDescription = "Profile"
-                                )
-                            }
-                        }
-                        BottomAppBar(
-                            actions = {
-                                IconButton(onClick = { /*TODO*/ }) {
-                                    Icon(
-                                        Icons.Outlined.DateRange,
-                                        contentDescription = "Rule Set"
-                                    )
-                                }
-                            }
-                        )
+            Spacer(modifier = Modifier.padding(32.dp))
 
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        RealTimeClock(punchInTime)
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.padding(32.dp))
+
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                OutlinedButton(
+                    onClick = {
+                        punchInTime = LocalTime.now()
+                        onClickButton1()
+                    },
+                    shape = CircleShape,
+                    modifier = Modifier
+                        .height(180.dp)
+                        .aspectRatio(1f)
+                ) {
+                    Text(
+                        text = "Punch In",
+                        fontSize = 25.sp
+                    )
                 }
             }
         }
+
+        BottomAppBar(
+            actions = {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        Icons.Outlined.DateRange,
+                        contentDescription = "Rule Set"
+                    )
+                }
+            }
+        )
     }
 }
 
-
-//clock
 @Composable
-fun RealTimeClock(): String {
-    var currentTime by remember { mutableStateOf(LocalTime.now()) }
-    LaunchedEffect(Unit) {
-            while (true) {
-                delay(1000) // Update every second
-                val currentTime = LocalTime.now()
-            }
-
-        }
+fun RealTimeClock(punchInTime: LocalTime?) {
     val formatter = DateTimeFormatter.ofPattern("hh:mm a")
-    val formattedTime = currentTime.format(formatter)
+    val formattedTime = punchInTime?.format(formatter) ?: "Not Punched In"
+
     Text(
-        text = "$formattedTime",
-        fontSize = 50.sp,
-        style = TextStyle(color = Color.DarkGray)
+        text = "Punch In Time: ",
+        fontSize = 25.sp,
+        modifier = Modifier.padding(8.dp)
     )
+    Text(
+        text = formattedTime,
+        fontSize = 25.sp,
+        style = TextStyle(color = Color.DarkGray),
+        modifier = Modifier.padding(8.dp)
+    )
+}
 
-    return formattedTime
-
-    }
-//date
 @Composable
-fun RealDate(): String {
+fun RealDate() {
     var currentDate by remember { mutableStateOf(Date()) }
     LaunchedEffect(Unit) {
         while (true) {
             delay(1000) // Update every second
-            val currentDate = Date()
+            currentDate = Date()
         }
-
     }
-    val patternt = "dd/MM/yyyy"
-    val dateFormat = SimpleDateFormat(patternt)
-    val formattedData = dateFormat.format(currentDate)
-    Text(
-        text = "$formattedData",
-        fontSize = 50.sp,
-        style = TextStyle(color = Color.DarkGray)
-    )
-    return formattedData
+    val pattern = "dd/MM/yyyy"
+    val dateFormat = SimpleDateFormat(pattern)
+    val formattedDate = dateFormat.format(currentDate)
 
+    Column {
+        Icon(
+            imageVector = Icons.Default.DateRange,
+            contentDescription = "Date",
+            Modifier.padding(8.dp)
+        )
 
-
+        Text(
+            text = formattedDate,
+            fontSize = 25.sp,
+            style = TextStyle(color = Color.DarkGray),
+            modifier = Modifier.padding(8.dp)
+        )
+    }
 }
-
-
-
-
 
 @Preview
 @Composable
 fun HomePreview() {
     MyComTheme {
-            Homepage()
-        }
+        Homepage()
     }
+}
