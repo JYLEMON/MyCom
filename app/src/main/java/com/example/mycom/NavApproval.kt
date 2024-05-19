@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.managementsystem.ManagementModule.ManagementApp
 import com.example.myapplication.DatabaseApproval.ApprovalEvent
 import com.example.myapplication.DatabaseApproval.ApprovalState
 import com.example.myapplication.ui.theme.Approvalscreen.StaffApprovalScreen
@@ -23,7 +24,10 @@ import com.example.myapplication.ui.theme.otherScreen.LoginScreen
 import com.example.myapplication.ui.theme.otherScreen.ProfileScreen
 import com.example.myapplication.ui.theme.otherScreen.RegisterScreen
 import com.example.mycom.R
+import com.example.mycom.data.ManagerList
 import com.example.mycom.ui.Approvalscreen.AddStaffApporval
+import com.example.mycom.ui.ManagementModule.ManageWork.WorkState
+import com.example.mycom.ui.ManagementModule.RuleModify.TimeRangeState
 import com.example.mycom.ui.employee.EmployeeEvent
 import com.example.mycom.ui.employee.EmployeeState
 
@@ -33,11 +37,9 @@ enum class MainScreen(@StringRes val title: Int) {
     StaffProfile(title = R.string.profile),
     Register(title = R.string.register ),
     StaffApproval(title = R.string.staff),
-    AddStaffApproval(title = R.string.AddApproval)
+    AddStaffApproval(title = R.string.AddApproval),
+    ManagementHome(title = R.string.manageScreen)
 }
-
-
-
 
 @Composable
 fun app(
@@ -66,7 +68,10 @@ fun app(
                 LoginScreen(
                     state = state,
                     onEvent = onEvent,
-                    onFirstButtonClicked = {
+                    onFirstButtonClicked = { id, password ->
+                        if (id == ManagerList.manager.id && password == ManagerList.manager.password) {
+                            navController.navigate(MainScreen.ManagementHome.name)
+                        }
                         if (state.validateLogin) {
                             navController.navigate(MainScreen.Home.name)
                         }
@@ -128,6 +133,10 @@ fun app(
                     navController.popBackStack()
                 }
             )
+        }
+
+        composable(route = MainScreen.ManagementHome.name) {
+            ManagementApp(state = WorkState(), onEvent = {}, timeRangeState = TimeRangeState()) {}
         }
 
     }
