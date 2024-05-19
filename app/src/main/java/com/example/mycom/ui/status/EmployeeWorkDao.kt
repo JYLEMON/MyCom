@@ -13,13 +13,13 @@ import kotlinx.coroutines.flow.Flow
 interface EmployeeWorkDao {
 
     @Upsert
-    suspend fun upsertWork(employeeWork: EmployeeWork)
+    suspend fun upsertEmployeeWork(employeeWork: EmployeeWork)
 
     @Delete
-    suspend fun deleteWork(employeeWork: EmployeeWork)
+    suspend fun deleteEmployeeWork(employeeWork: EmployeeWork)
 
     @Update
-    suspend fun updateWork(employeeWork: EmployeeWork)
+    suspend fun updateEmployeeWork(employeeWork: EmployeeWork)
 
     @Query("SELECT * FROM EmployeeWork ORDER BY empId ASC")
     fun getEmployeeWorkListOrderById(): Flow<List<EmployeeWork>>
