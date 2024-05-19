@@ -118,7 +118,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-           MyComTheme {
+            MyComTheme {
                 val state by viewModel.state.collectAsState()
                 val workState by workViewModel.state.collectAsState()
                 val timeRangeState by timeRangeViewModel.state.collectAsState()
@@ -137,7 +137,7 @@ class MainActivity : ComponentActivity() {
                     OneTimeRunUtil.setHasRun(this)
                 }
 
-              /*  ManagementApp(
+                /*ManagementApp(
                     state = workState,
                     onEvent = workViewModel::onEvent,
                     timeRangeState = timeRangeState,
