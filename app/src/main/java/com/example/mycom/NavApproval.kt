@@ -84,15 +84,11 @@ fun app(
         }
         composable(route = MainScreen.StaffProfile.name) {
             ProfileScreen(
+                empId = "E001",
                 name = "liangyouxian",
                 email = "liangyouxian1@gmail.com",
                 salary = "2000.50",
-                work = "10",
-                notification = "Work/Staff Approval:",
-                textbotton1 = "Approval Leave & Late",
-                onClickButton1 = {
 
-                },
                 onClickButton2 = {
                     navController.navigate(MainScreen.StaffApproval.name)
                 },
