@@ -15,11 +15,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.DatabaseApproval.ApprovalEvent
+import com.example.myapplication.DatabaseApproval.ApprovalState
+import com.example.myapplication.ui.theme.Approvalscreen.StaffApprovalScreen
 import com.example.myapplication.ui.theme.otherScreen.Homepage
 import com.example.myapplication.ui.theme.otherScreen.LoginScreen
 import com.example.myapplication.ui.theme.otherScreen.ProfileScreen
 import com.example.myapplication.ui.theme.otherScreen.RegisterScreen
 import com.example.mycom.R
+import com.example.mycom.ui.Approvalscreen.AddStaffApporval
 import com.example.mycom.ui.employee.EmployeeEvent
 import com.example.mycom.ui.employee.EmployeeState
 
@@ -28,7 +32,8 @@ enum class MainScreen(@StringRes val title: Int) {
     Home(title = R.string.home),
     StaffProfile(title = R.string.profile),
     Register(title = R.string.register ),
-    StaffApproval(title = R.string.staff)
+    StaffApproval(title = R.string.staff),
+    AddStaffApproval(title = R.string.AddApproval)
 }
 
 
@@ -39,6 +44,8 @@ fun app(
     navController: NavHostController = rememberNavController(),
     state: EmployeeState,
     onEvent: (EmployeeEvent) -> Unit,
+    appstate: ApprovalState,
+    apponEvent: (ApprovalEvent) -> Unit,
     ){
     // Get current back stack entry
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -86,7 +93,9 @@ fun app(
                 onClickButton1 = {
 
                 },
-                onClickButton2 = {},
+                onClickButton2 = {
+                    navController.navigate(MainScreen.StaffApproval.name)
+                },
                 onClickButton3 = {
                     navController.navigate(MainScreen.Login.name)
                 })
@@ -98,13 +107,28 @@ fun app(
                     onClickButton1 = {
                         navController.popBackStack()
                 }
-        )
-
-
-
+            )
         }
 
+        composable(route = MainScreen.StaffApproval.name) {
+            StaffApprovalScreen(
+                state = appstate,
+                onEvent = apponEvent ,
+                onClickButton1 = {
+                    navController.navigate(MainScreen.AddStaffApproval.name)
+                }
+            )
+        }
 
+        composable(route = MainScreen.AddStaffApproval.name) {
+            AddStaffApporval(
+                state = appstate,
+                onEvent = apponEvent ,
+                onClickButton1 = {
+                    navController.popBackStack()
+                }
+            )
+        }
 
     }
     }
