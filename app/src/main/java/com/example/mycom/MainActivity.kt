@@ -20,6 +20,8 @@ import com.example.myapplication.DatabaseAttendance.AttendanceViewModel
 import com.example.myapplication.app
 import com.example.mycom.data.EmployeeDatabase
 import com.example.mycom.timeRangeData.TimeRangeDatabase
+import com.example.mycom.ui.ManagementModule.RuleModify.TimePickerEvent
+import com.example.mycom.ui.ManagementModule.RuleModify.TimeRangeState
 import com.example.mycom.ui.employee.EmployeeViewModel
 import com.example.mycom.ui.ManagementModule.RuleModify.TimeRangeViewModel
 import com.example.mycom.ui.theme.MyComTheme
@@ -126,6 +128,15 @@ class MainActivity : ComponentActivity() {
                 //StaffApprovalScreen(state = apprstate, onEvent = approvalviewModel::onEvent)
                 app(state = state, onEvent = viewModel::onEvent)
                 // RegisterScreen(state = state, onEvent = viewModel::onEvent)
+
+                if (!OneTimeRunUtil.hasRun(this)) {
+                    // Your one-time code here
+                    executeOneTimeCode(state = timeRangeState, onEvent = timeRangeViewModel::onEvent)
+
+                    // Set the flag indicating the code has run
+                    OneTimeRunUtil.setHasRun(this)
+                }
+
                 ManagementApp(
                     state = workState,
                     onEvent = workViewModel::onEvent,
@@ -134,5 +145,10 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    private fun executeOneTimeCode(state: TimeRangeState, onEvent: (TimePickerEvent) -> Unit) {
+        // Your code that should run only once per device
+        onEvent(TimePickerEvent.SaveDefaultTime)
     }
 }
