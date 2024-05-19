@@ -24,5 +24,5 @@ interface EmployeeDao {
     @Query("SELECT * FROM Employee ORDER BY empId")
     fun getEmployeeOrderedById(): Flow<List<Employee>>
     @Query("SELECT * FROM Employee WHERE empId = :empId AND password = :password")
-    fun login(empId: String, password: String): Employee?
+    suspend fun login(empId: String, password: String): Employee?
 }

@@ -39,4 +39,5 @@ sealed interface EmployeeEvent {
     data class SortEmployee(val sortType: SortType): EmployeeEvent
     data class DeleteEmployee(val employee: Employee): EmployeeEvent
 
+    data class login(val id: String, val password: String): EmployeeEvent
 }

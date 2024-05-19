@@ -33,6 +33,21 @@ class EmployeeViewModel(
 
     fun onEvent(event: EmployeeEvent) {
         when (event) {
+            is EmployeeEvent.login -> {
+                var employee: Employee? = null
+                viewModelScope.launch {
+                    employee = dao.login(event.id, event.password)
+                }
+
+                if (employee == null) {
+                    return
+                }
+
+                _state.update {it.copy(
+                    validateLogin = true
+                )
+                }
+            }
             // Show/Hide Edit Dialog
             is EmployeeEvent.ShowEditDialog -> {
                 _state.update { it.copy(isEditingEmployee = true, selectedEmployee = event.employee) }
