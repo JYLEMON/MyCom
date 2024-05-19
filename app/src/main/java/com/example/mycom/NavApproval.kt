@@ -64,8 +64,12 @@ fun app(
             .padding(innerPadding)){
         composable(route = MainScreen.Login.name){
                 LoginScreen(
+                    state = state,
+                    onEvent = onEvent,
                     onFirstButtonClicked = {
-                        navController.navigate(MainScreen.Home.name)
+                        if (state.validateLogin) {
+                            navController.navigate(MainScreen.Home.name)
+                        }
                     },
                     onSecondButtonClicked = {
                         navController.navigate(MainScreen.Register.name)
