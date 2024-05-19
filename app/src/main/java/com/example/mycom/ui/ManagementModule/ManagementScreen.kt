@@ -108,7 +108,7 @@ fun ManagementApp(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = ManagementScreen.managementMain.name) {
-                MainScreen()
+                MainScreen(navController)
             }
             composable(route = ManagementScreen.ruleSet.name) {
                 ShowRulesScreen(state = timeRangeState, onEvent = onTimeEvent)
