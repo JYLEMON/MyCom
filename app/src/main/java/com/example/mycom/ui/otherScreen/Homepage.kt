@@ -5,13 +5,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -101,15 +102,43 @@ fun Homepage(
         }
 
         BottomAppBar(
-            actions = {
+            modifier = Modifier.fillMaxWidth(),
+            containerColor = Color.LightGray
+        ) {
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
-                        Icons.Outlined.DateRange,
-                        contentDescription = "Rule Set"
+                        Icons.Outlined.Add,
+                        contentDescription = "WorkSpace"
+                    )
+                }
+
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        Icons.Outlined.Email,
+                        contentDescription = "Application"
+                    )
+                }
+
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        Icons.Outlined.Info,
+                        contentDescription = "Status"
+                    )
+                }
+
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        Icons.Outlined.Person,
+                        contentDescription = "Profile"
                     )
                 }
             }
-        )
+        }
     }
 }
 
@@ -120,12 +149,12 @@ fun RealTimeClock(punchInTime: LocalTime?) {
 
     Text(
         text = "Punch In Time: ",
-        fontSize = 25.sp,
+        fontSize = 24.sp,
         modifier = Modifier.padding(8.dp)
     )
     Text(
         text = formattedTime,
-        fontSize = 25.sp,
+        fontSize = 20.sp,
         style = TextStyle(color = Color.DarkGray),
         modifier = Modifier.padding(8.dp)
     )
@@ -145,12 +174,17 @@ fun RealDate() {
     val formattedDate = dateFormat.format(currentDate)
 
     Column {
-        Icon(
-            imageVector = Icons.Default.DateRange,
-            contentDescription = "Date",
-            Modifier.padding(8.dp)
-        )
-
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Text(text = "Current Date",fontSize = 25.sp,)
+            Icon(
+                imageVector = Icons.Default.DateRange,
+                contentDescription = "Date",
+                Modifier.padding(start = 16.dp)
+            )
+        }
         Text(
             text = formattedDate,
             fontSize = 25.sp,
