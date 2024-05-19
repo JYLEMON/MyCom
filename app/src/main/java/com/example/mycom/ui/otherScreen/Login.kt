@@ -29,12 +29,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mycom.ui.employee.EmployeeEvent
+import com.example.mycom.ui.employee.EmployeeState
 import com.example.mycom.ui.theme.MyComTheme
 import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
-    onFirstButtonClicked: () -> Unit = {},
+    onEvent: (EmployeeEvent) -> Unit,
+    state: EmployeeState,
+    onFirstButtonClicked: (String, String) -> Unit,
     onSecondButtonClicked: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -88,7 +92,10 @@ fun LoginScreen(
 
             //Login
             Button(
-                onClick = onFirstButtonClicked,
+                onClick = {
+                    onEvent(EmployeeEvent.login(id,password))
+                    onFirstButtonClicked(id, password)
+                          },
                 modifier = Modifier
                     .width(144.dp)
                     .padding(top = 32.dp)
@@ -120,6 +127,6 @@ fun LoginScreen(
 @Composable
 fun LoginPreview() {
     MyComTheme {
-        LoginScreen(modifier = Modifier.fillMaxSize())
+        //LoginScreen(modifier = Modifier.fillMaxSize())
     }
 }

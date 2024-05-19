@@ -48,6 +48,7 @@ class TimeRangeViewModel(
 
     fun onEvent(event: TimePickerEvent) {
         when(event) {
+
             TimePickerEvent.HideStartTimeDialog -> {
                 _state.update { it.copy(
                     isSettingStartTime = false

@@ -26,6 +26,8 @@ import com.example.mycom.R
 import com.example.mycom.ui.Approvalscreen.AddStaffApporval
 import com.example.mycom.ui.employee.EmployeeEvent
 import com.example.mycom.ui.employee.EmployeeState
+import com.example.mycom.ui.employee.EmployeeViewModel
+import com.example.mycom.ui.employee.LoginViewModel
 
 enum class MainScreen(@StringRes val title: Int) {
     Login(title = R.string.login),
@@ -41,6 +43,7 @@ enum class MainScreen(@StringRes val title: Int) {
 
 @Composable
 fun app(
+    viewModel: EmployeeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     navController: NavHostController = rememberNavController(),
     state: EmployeeState,
     onEvent: (EmployeeEvent) -> Unit,
@@ -64,8 +67,12 @@ fun app(
             .padding(innerPadding)){
         composable(route = MainScreen.Login.name){
                 LoginScreen(
-                    onFirstButtonClicked = {
-                        navController.navigate(MainScreen.Home.name)
+                    state = state,
+                    onEvent = onEvent,
+                    onFirstButtonClicked = { id, password ->
+                        if (state.validateLogin) {
+                            navController.navigate(MainScreen.Home.name)
+                        }
                     },
                     onSecondButtonClicked = {
                         navController.navigate(MainScreen.Register.name)

@@ -215,7 +215,9 @@ fun StatusNavigationHost(
 )
 @Composable
 fun StatusScreenPreview(){
-    StatusNavigationHost(workListState = WorkState(),
+    StatusNavigationHost(
+        workListState = WorkState(),
         employeeWorkListState = EmployeeWorkState(),
-        onEvent = {})
+        onEvent = {}
+    )
 }

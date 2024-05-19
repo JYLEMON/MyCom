@@ -6,14 +6,18 @@ import com.example.mycom.data.Employee
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import android.app.Application
+import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.AndroidViewModel
 
 class EmployeeViewModel(
     application: Application,
     private val dao: EmployeeDao
 ) : AndroidViewModel(application) {
+    val snackbarHostState = SnackbarHostState()
 
     private val preferencesManager = PreferencesManager(application)
+
+    private val repository: EmployeeRepository = EmployeeRepository(dao)
 
     private val _sortType = MutableStateFlow(SortType.EMP_ID)
     private val _employees = _sortType
@@ -31,8 +35,38 @@ class EmployeeViewModel(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), EmployeeState())
 
+    fun login(
+        id: String,
+        password: String): Boolean{
+        var employee: Employee? = null
+        viewModelScope.launch {
+            employee = repository.authenticate(id,password)
+        }
+        if (employee != null) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     fun onEvent(event: EmployeeEvent) {
         when (event) {
+            is EmployeeEvent.login -> {
+                var employee: Employee? = null
+                viewModelScope.launch {
+                    employee = dao.login(event.id, event.password)
+                }
+
+                if (employee == null) {
+                    return
+                }
+
+                _state.update {it.copy(
+                    validateLogin = true
+                )
+                }
+            }
+
             // Show/Hide Edit Dialog
             is EmployeeEvent.ShowEditDialog -> {
                 _state.update { it.copy(isEditingEmployee = true, selectedEmployee = event.employee) }
@@ -141,6 +175,8 @@ class EmployeeViewModel(
             EmployeeEvent.HideDetailDialog -> {
                 _state.update { it.copy(isShowingDetail = false) }
             }
+
+            else -> {}
         }
     }
 }
