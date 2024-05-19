@@ -140,6 +140,13 @@ fun Homepage(
                         contentDescription = "Profile"
                     )
                 }
+
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        Icons.Outlined.Build,
+                        contentDescription = "Management Screen"
+                    )
+                }
             }
         }
     }
