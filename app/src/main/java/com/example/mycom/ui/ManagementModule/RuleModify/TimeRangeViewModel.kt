@@ -82,14 +82,7 @@ class TimeRangeViewModel(
 
                 viewModelScope.launch {
                     dao.upsertTimeRange(
-                        timeRange = TimeRange(
-                            startHour = state.value.startHour,
-                            startMinute = state.value.startMinute,
-                            startAmPm = state.value.startAmPm,
-                            endHour = state.value.endHour,
-                            endMinute = state.value.endMinute,
-                            endAmPm = state.value.endAmPm
-                        )
+                        timeRange = timeRangeList.first()
                     )
                 }
             }
