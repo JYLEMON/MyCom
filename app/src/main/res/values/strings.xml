@@ -15,4 +15,10 @@
     <string name="modifyWork">Modify Work Detail</string>
     <string name="EmployeeStatus">Status display</string>
     <string name="AcceptableWorkList">Acceptable Work List</string>
+    <string name="login">login</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="register">Register</string>
+    <string name="staff">Staff</string>
+    <string name="AddApproval">AddApproval</string>
 </resources>

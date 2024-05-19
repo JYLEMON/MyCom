@@ -118,7 +118,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-            MyComTheme {
+           MyComTheme {
                 val state by viewModel.state.collectAsState()
                 val workState by workViewModel.state.collectAsState()
                 val timeRangeState by timeRangeViewModel.state.collectAsState()
@@ -126,7 +126,7 @@ class MainActivity : ComponentActivity() {
                 val apprstate by approvalviewModel.state.collectAsState()
                 val Attesyaye by attendanceviewModel.state.collectAsState()
                 //StaffApprovalScreen(state = apprstate, onEvent = approvalviewModel::onEvent)
-                app(state = state, onEvent = viewModel::onEvent)
+                app(state = state, onEvent = viewModel::onEvent, appstate = apprstate, apponEvent = approvalviewModel::onEvent)
                 // RegisterScreen(state = state, onEvent = viewModel::onEvent)
 
                 if (!OneTimeRunUtil.hasRun(this)) {
@@ -137,12 +137,12 @@ class MainActivity : ComponentActivity() {
                     OneTimeRunUtil.setHasRun(this)
                 }
 
-                ManagementApp(
+              /*  ManagementApp(
                     state = workState,
                     onEvent = workViewModel::onEvent,
                     timeRangeState = timeRangeState,
                     onTimeEvent = timeRangeViewModel::onEvent
-                )
+                )*/
             }
         }
     }
