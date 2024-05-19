@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mycom.data.ManagerList.manager
 import com.example.mycom.ui.employee.EmployeeEvent
 import com.example.mycom.ui.employee.EmployeeState
 import com.example.mycom.ui.theme.MyComTheme
@@ -38,7 +39,7 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     state: EmployeeState,
     onEvent: (EmployeeEvent) -> Unit,
-    onFirstButtonClicked: () -> Unit = {},
+    onFirstButtonClicked: (String, String) -> Unit,
     onSecondButtonClicked: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -93,8 +94,14 @@ fun LoginScreen(
             //Login
             Button(
                 onClick = {
-                    onEvent(EmployeeEvent.login(id,password))
-                    onFirstButtonClicked() },
+                    val firstChar = id[0]
+                    if(firstChar == 'M') {
+                        onFirstButtonClicked(id, password)
+                    } else if (firstChar == 'E') {
+                        onEvent(EmployeeEvent.login(id,password))
+                        onFirstButtonClicked(id, password)
+                    }
+                     },
                 modifier = Modifier
                     .width(144.dp)
                     .padding(top = 32.dp)
