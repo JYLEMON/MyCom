@@ -27,6 +27,8 @@ import com.example.managementsystem.Data.Work
 import com.example.mycom.ui.ManagementModule.ManageWork.WorkState
 import com.example.mycom.R
 import com.example.mycom.ui.status.DisplayAssignableWorkListScreen
+import com.example.mycom.ui.status.EmployeeWorkEvent
+import com.example.mycom.ui.status.EmployeeWorkState
 
 enum class DisplayWorkNavigation(val title: Int) {
     Status(title = R.string.EmployeeStatus),
@@ -174,15 +176,15 @@ fun StatusScreen(
 @Composable
 fun StatusNavigationHost(
     navController: NavHostController = rememberNavController(),
-    workListState: WorkState
+    workListState: WorkState,
+    employeeWorkListState: EmployeeWorkState,
+    onEvent: (EmployeeWorkEvent) -> Unit
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
 
     val currentScreen = DisplayWorkNavigation.valueOf(
         backStackEntry?.destination?.route ?: DisplayWorkNavigation.Status.name
     )
-
-    var selectedWork by remember { mutableStateOf<Work?>(null) }
 
     Scaffold { innerPadding ->
         NavHost(
@@ -199,7 +201,7 @@ fun StatusNavigationHost(
                 DisplayAssignableWorkListScreen(
                     state = workListState,
                     onWorkSelected = { work ->
-                        selectedWork = work
+                        onEvent(EmployeeWorkEvent.SetWorkID(work.workID))
                     }
                 )
             }
@@ -213,5 +215,7 @@ fun StatusNavigationHost(
 )
 @Composable
 fun StatusScreenPreview(){
-    StatusNavigationHost(workListState = WorkState())
+    StatusNavigationHost(workListState = WorkState(),
+        employeeWorkListState = EmployeeWorkState(),
+        onEvent = {})
 }
