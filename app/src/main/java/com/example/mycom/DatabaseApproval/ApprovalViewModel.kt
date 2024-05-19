@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.myapplication.Database.Approval
 import com.example.myapplication.Database.ApprovalStaffDao
 import com.example.myapplication.DatabaseAttendance.AttendanceDao
+import com.example.mycom.ui.employee.EmployeeEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -33,6 +34,7 @@ class ApprovalViewModel(private val apprdao: ApprovalStaffDao): ViewModel()
 
     fun onEvent(event: ApprovalEvent){
         when(event){
+
             is ApprovalEvent.DeleteApproval -> {
                 viewModelScope.launch {
                     apprdao.deleteApproval(event.approval)
@@ -45,6 +47,7 @@ class ApprovalViewModel(private val apprdao: ApprovalStaffDao): ViewModel()
 
             ApprovalEvent.SaveApproval -> {
                 val staffid = state.value.staffid
+                val name =state.value.name
                 val appreason = state.value.appreason
                 val leaveandlate = state.value.leaveandlate
                 val stateinfo = state.value.stateinfo
@@ -59,6 +62,7 @@ class ApprovalViewModel(private val apprdao: ApprovalStaffDao): ViewModel()
                 }
                 val approval = Approval(
                     staffid = staffid,
+                    name = name,
                     appreason = appreason,
                     leaveandlate = leaveandlate,
                     stateinfo = stateinfo,
@@ -70,6 +74,7 @@ class ApprovalViewModel(private val apprdao: ApprovalStaffDao): ViewModel()
                 }
                 _state.update { it.copy(
                     isAddingApproval = false,
+                    name = "",
                     staffid = "",
                     appreason = "",
                     leaveandlate = "",
@@ -77,6 +82,9 @@ class ApprovalViewModel(private val apprdao: ApprovalStaffDao): ViewModel()
                     apptime = "",
                     appdate = ""
                 ) }
+            }
+            is ApprovalEvent.Setname -> {
+                _state.update { it.copy(name = event.name) }
             }
             is ApprovalEvent.SetStaffApprovalList -> {
                 _state.update { it.copy(staffid = event.staffid) }
@@ -102,6 +110,26 @@ class ApprovalViewModel(private val apprdao: ApprovalStaffDao): ViewModel()
             is ApprovalEvent.SortApproval -> {
                 _Approval_sortType.value = event.approvalSortType
             }
+            is ApprovalEvent.ApproveApproval -> {
+                viewModelScope.launch {
+                    val updatedApproval = event.approval.copy(stateinfo = "批准")
+                    apprdao.insertApproval(updatedApproval)
+                }
+            }
+            is ApprovalEvent.RejectApproval -> {
+                viewModelScope.launch {
+                    val updatedApproval = event.approval.copy(stateinfo = "驳回")
+                    apprdao.insertApproval(updatedApproval)
+                }
+            }
+            is ApprovalEvent.SelectApproval -> {
+                _state.update { it.copy(selectedApproval = event.approval) }
+            }
+
+            ApprovalEvent.DismissApprovalDetail -> {
+                _state.update { it.copy(selectedApproval = null) }
+            }
+
         }
     }
 }

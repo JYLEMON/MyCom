@@ -11,4 +11,5 @@ sealed interface AttendanceEvent {
     object HideAttendanceList:AttendanceEvent
     data class SortAttendance(val attendanceSortType: AttendanceSortType):AttendanceEvent
     data class DeleteAttendance(val attendance:Attendance):AttendanceEvent
+
 }
