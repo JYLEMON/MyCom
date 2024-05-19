@@ -9,6 +9,8 @@ data class Employee (
     val email: String,
     val password: String,
     val salary: String,
+
+    //EmpId
     @PrimaryKey(autoGenerate = true)
     val idCount: Int = 0,
     val empId: String = "E${String.format("%03d", idCount)}",
