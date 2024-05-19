@@ -5,6 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class EmployeeWork (
+    @PrimaryKey(autoGenerate = true)
+    val empWork: Int = 0,
     val empId: String = "",
     val workID: String = "",
     @PrimaryKey(autoGenerate = true)
