@@ -102,13 +102,15 @@ fun Homepage(
         }
 
         BottomAppBar(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .height(64.dp)
+                .fillMaxWidth(),
             containerColor = Color.LightGray
         ) {
             Row (
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxSize()
             ) {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
