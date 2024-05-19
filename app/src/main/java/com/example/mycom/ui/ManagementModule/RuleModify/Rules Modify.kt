@@ -2,6 +2,7 @@ package com.example.managementsystem.ManagementModule
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -11,8 +12,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -28,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.mycom.ui.ManagementModule.RuleModify.TimePickerEvent
@@ -66,27 +75,75 @@ fun ShowRulesScreen(
 
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Row {
-            Text("Current time range: ")
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = "Set Working Time",
+                Modifier.padding(16.dp),
+                fontSize = 24.sp
+            )
         }
-        Row {
-            Text("$startTime-$endTime")
-        }
-        Row {
-            Button(onClick = {
-                showStartTimePicker =true
-            }
+
+        Divider(Modifier.padding(8.dp))
+
+        Card (
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Set Start Time")
+                Column {
+                    Text("Current Start Time",
+                        Modifier.padding(8.dp)
+                    )
+                    Text("$startTime", Modifier.padding(8.dp))
+                }
+                IconButton(onClick = {
+                    showStartTimePicker = true
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        contentDescription = "Set Start Time"
+                    )
+                }
             }
         }
-        Row {
-            Button(onClick = {
-                showEndTimePicker =true
-            }) {
-                Text("Set End Time")
+
+        Card (
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text("Current End Time",
+                        Modifier.padding(8.dp)
+                    )
+                    Text("$endTime", Modifier.padding(8.dp))
+                }
+                IconButton(onClick = {
+                    showEndTimePicker = true
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        contentDescription = "Set End Time"
+                    )
+                }
             }
         }
     }
